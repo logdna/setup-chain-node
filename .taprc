@@ -1,0 +1,16 @@
+esm: false
+ts: false
+jsx: false
+check-coverage: true
+nyc-arg:
+- --all=true
+coverage-report:
+- text
+- text-summary
+- json
+files:
+- test/unit/**/*.js
+- test/integration/**/*.js
+branches: 98
+lines: 98
+functions: 98

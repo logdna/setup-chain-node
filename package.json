@@ -1,0 +1,31 @@
+{
+  "name": "@answerbook/logdna-test-setup-chain",
+  "version": "0.0.0",
+  "description": "Base class for implement seed and resource data for test suites",
+  "main": "index.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
+  "scripts": {
+    "test": "tap --coverage-report=json --coverage-report=text",
+    "test:ci": "./tools/test-ci.sh",
+    "tap": "tap"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/answerbook/logdna-test-setup-chain"
+  },
+  "keywords": [
+    "testing"
+  ],
+  "author": "Eric Satterwhite <eric.satterwhite@logdna.com>",
+  "license": "SEE LICENSE IN LICENSE",
+  "bugs": {
+    "url": "https://github.com/answerbook/logdna-test-setup-chain/issues"
+  },
+  "homepage": "https://github.com/answerbook/logdna-test-setup-chain#readme",
+  "devDependencies": {
+    "casual": "^1.6.2",
+    "tap": "^14.10.7"
+  }
+}

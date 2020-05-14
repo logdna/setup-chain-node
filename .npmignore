@@ -1,0 +1,6 @@
+test/
+coverage/
+.nyc_output/
+*.vim
+*.swp
+.taprc
