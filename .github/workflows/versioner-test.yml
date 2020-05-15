@@ -1,12 +1,13 @@
-name: NPM Publish
+name: Test Package Publish
 
 on:
   push:
     branches:
-      - master
+      - '**'
+      - '!master'
 
 jobs:
-  publish:
+  publish-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,7 +18,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-      - name: NPM Publish
+      - name: Install versioner
         env:
           NPM_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
         run: >
@@ -26,6 +27,6 @@ jobs:
           git config user.name "LogDNA Bot" &&
           git config user.email "bot@logdna.com" &&
           git config remote.origin.url "https://${GITHUB_ACTOR}:${NPM_TOKEN}@github.com/${GITHUB_REPOSITORY}" &&
-          npm i -g @answerbook/versioner
+          npm install -g @answerbook/versioner
       - run: npm install
-      - run: versioner --publish
+      - run: versioner --publish --dry
