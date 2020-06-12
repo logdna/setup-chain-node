@@ -7,7 +7,6 @@ const actions = require('../actions')
 test('Setup chain', async (t) => {
   t.test('base chain', async (tt) => {
     const chain = new Chain()
-    tt.type(chain.sleep, 'function', 'chain has sleep function')
     const start = new Date()
     await new Chain()
       .sleep()
@@ -20,12 +19,7 @@ test('Setup chain', async (t) => {
   t.test('extended chain', async (tt) => {
     class ExtendedChain extends Chain {
       constructor(state) {
-        super(state)
-
-        this.actions = {
-          ...this.actions
-        , ...actions
-        }
+        super(state, actions)
       }
 
       $double(value) {
@@ -35,22 +29,6 @@ test('Setup chain', async (t) => {
       $last(...args) {
         return args[args.length - 1]
       }
-
-      greet(opts, label) {
-        this.tasks.push({key: 'greet', opts, label})
-        return this
-      }
-
-      name(opts, label) {
-        this.tasks.push({key: 'name', opts, label})
-        return this
-      }
-
-      error(opts, label) {
-        this.tasks.push({key: 'error', opts, label})
-        return this
-      }
-
       fake(opts, label) {
         this.tasks.push(null)
         return this
