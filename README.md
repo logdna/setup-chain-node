@@ -108,7 +108,7 @@ for tests in your specific projects. The only requirement is setting local `acti
 property in the constructor which is an `Object` holding name / asnyc function parings
 
 The base class provides a set default actions which you can choose to include. Each
-action should be exposed via a builder function that queues a task.
+action will be exposed via a builder function that queues a task.
 
 ```javascript
 const SetupChain = require('@answerbook/logdna-test-setup-chain')
@@ -116,15 +116,8 @@ const SetupChain = require('@answerbook/logdna-test-setup-chain')
 const actions = require('../actions')
 class MyChain extends SetupChain {
   constructor(state) {
-    super(state)
-
-    // Set actions
-    this.actions = {
-      ...this.actions
-    , ...actions
-    }
+    super(state, actions)
   }
-
 }
 ```
 
@@ -174,32 +167,7 @@ const actions = {
 
 class MyChain extends SetupChain {
   constructor(state) {
-    super(state)
-
-    // Set actions
-    this.actions = {
-      ...this.actions
-    , ...actions
-    }
-  }
-
-  // expose builder functions
-  greet(opts, label) {
-    this.tasks.push({
-      key: 'greet'
-    , opts
-    , label
-    })
-    return this
-  }
-
-  name(opts, label) {
-    this.tasks.push({
-      key: 'name'
-    , opts
-    , label
-    })
-    return this
+    super(state, actions)
   }
 }
 ```
