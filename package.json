@@ -7,8 +7,7 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "test": "tap --coverage-report=json --coverage-report=text",
-    "test:ci": "./tools/test-ci.sh",
+    "test": "tap;cat $(find .tap -type f -name '*.tap') | ./node_modules/.bin/tap-mocha-reporter xunit > coverage/test.xml",
     "tap": "tap"
   },
   "repository": {
@@ -27,5 +26,31 @@
   "devDependencies": {
     "casual": "^1.6.2",
     "tap": "^14.10.7"
+  },
+  "tap": {
+    "ts": false,
+    "esm": false,
+    "jsx": false,
+    "browser": false,
+    "branches": 98,
+    "lines": 98,
+    "functions": 98,
+    "statements": 98,
+    "reporter": "classic",
+    "output-dir": ".tap",
+    "check-coverage": true,
+    "files": [
+      "test/**/*.js"
+    ],
+    "coverage-report": [
+      "text",
+      "text-summary",
+      "json",
+      "html"
+    ],
+    "nyc-arg": [
+      "--exclude=test/",
+      "--exclude=coverage/"
+    ]
   }
 }
