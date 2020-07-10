@@ -14,7 +14,7 @@ test('Exports as expected', async (t) => {
 })
 
 test('object#hasOwnProperty', async (t) => {
-  const state = {x : 1}
+  const state = {x: 1}
   t.ok(object.hasOwnProperty(state, 'x'), 'top level property')
   t.notOk(object.hasOwnProperty(state, 'toString'), 'property from property chain')
 })
@@ -24,9 +24,9 @@ test('object#getPropery', async (t) => {
   const input = {
     l1: {
       l1p1: 2
-      , l1p2: {
+    , l1p2: {
         l3p1: 4
-        , l3p2: null
+      , l3p2: null
       }
     }
   }

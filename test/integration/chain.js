@@ -6,7 +6,6 @@ const actions = require('../actions')
 
 test('Setup chain', async (t) => {
   t.test('base chain', async (tt) => {
-    const chain = new Chain()
     const start = new Date()
     await new Chain()
       .sleep()
@@ -52,12 +51,12 @@ test('Setup chain', async (t) => {
       , name_2: 'bill'
       , name_3: 'fred'
       , greet: [
-        'Hello Jeff'
-      , 'Hello bill'
-      , 'Hello fred'
-      , `Hello ${state.name}`
-      , 'Hello 6'
-      ]}, 'expected output')
+          'Hello Jeff'
+        , 'Hello bill'
+        , 'Hello fred'
+        , `Hello ${state.name}`
+        , 'Hello 6'
+        ]}, 'expected output')
     }
 
     tt.rejects(

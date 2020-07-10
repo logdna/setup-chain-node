@@ -26,8 +26,8 @@ test('array', (t) => {
     for (const current of cases) {
       tt.deepEqual(
         array.toArray(current.value)
-        , current.expected
-        , current.message || `toArray(${current.value}) == ${current.expected}`
+      , current.expected
+      , current.message || `toArray(${current.value}) == ${current.expected}`
       )
     }
     tt.end()

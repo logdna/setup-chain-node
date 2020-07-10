@@ -1,4 +1,4 @@
-'use string'
+'use strict'
 
 const assert = require('assert')
 const defaults = {
@@ -13,6 +13,8 @@ module.exports = async function greet(opts) {
     ...defaults
   , ...opts
   })
+
+  assert.ok(config.greeting, greeting_error)
 
   return config.names.map((name) => {
     return `${config.greeting} ${name}`

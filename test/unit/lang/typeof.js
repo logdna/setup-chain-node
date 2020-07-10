@@ -1,6 +1,6 @@
 'use strict'
 
-const {test, pass, threw} = require('tap')
+const {test, threw} = require('tap')
 const typeOf = require('../../../lib/lang/type-of.js')
 
 class FooBar {
@@ -14,58 +14,58 @@ test('typeOf', (t) => {
   const cases = [
     {
       value: ''
-      , expected: 'string'
+    , expected: 'string'
     }
-    , {
+  , {
       value: new Date()
-      , expected: 'date'
+    , expected: 'date'
     }
-    , {
+  , {
       value: null
-      , expected: 'null'
+    , expected: 'null'
     }
-    , {
+  , {
       value: undefined
-      , expected: 'undefined'
+    , expected: 'undefined'
     }
-    , {
+  , {
       value: 1.1
-      , expected: 'number'
+    , expected: 'number'
     }
-    , {
+  , {
       value: /\w+/
-      , expected: 'regexp'
+    , expected: 'regexp'
     }
-    , {
+  , {
       value: new FooBar()
-      , expected: 'foobar'
+    , expected: 'foobar'
     }
-    , {
+  , {
       value: new Set()
-      , expected: 'set'
+    , expected: 'set'
     }
-    , {
+  , {
       value: [1, 2]
-      , expected: 'array'
+    , expected: 'array'
     }
-    , {
+  , {
       value: {}
-      , expected: 'object'
+    , expected: 'object'
     }
-    , {
+  , {
       value: true
-      , expected: 'boolean'
+    , expected: 'boolean'
     }
-    , {
+  , {
       value: () => {}
-      , expected: 'function'
+    , expected: 'function'
     }
   ]
   for (const current of cases) {
     t.equal(
       typeOf(current.value)
-      , current.expected
-      , current.message || `typeOf(${current.value}) == ${current.expected}`
+    , current.expected
+    , current.message || `typeOf(${current.value}) == ${current.expected}`
     )
   }
   t.end()
