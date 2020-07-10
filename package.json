@@ -7,7 +7,9 @@
     "registry": "https://npm.pkg.github.com/"
   },
   "scripts": {
-    "test": "tap;cat $(find .tap -type f -name '*.tap') | ./node_modules/.bin/tap-mocha-reporter xunit > coverage/test.xml",
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "tap; cat .tap/tests.out | ./node_modules/.bin/tap-mocha-reporter xunit > coverage/test.xml",
     "tap": "tap"
   },
   "repository": {
@@ -22,9 +24,21 @@
   "bugs": {
     "url": "https://github.com/answerbook/logdna-test-setup-chain/issues"
   },
+  "eslintConfig": {
+    "extends": [
+      "@answerbook/eslint-config-logdna"
+    ],
+    "root": true,
+    "ignorePatterns": [
+      "node_modules/",
+      "coverage/"
+    ]
+  },
   "homepage": "https://github.com/answerbook/logdna-test-setup-chain#readme",
   "devDependencies": {
+    "@answerbook/eslint-config-logdna": "^5.2.0",
     "casual": "^1.6.2",
+    "eslint": "^7.4.0",
     "tap": "^14.10.7"
   },
   "tap": {
@@ -37,7 +51,7 @@
     "functions": 98,
     "statements": 98,
     "reporter": "classic",
-    "output-dir": ".tap",
+    "output-file": ".tap/tests.out",
     "check-coverage": true,
     "files": [
       "test/**/*.js"

@@ -1,3 +1,5 @@
+'use strict'
+
 const {test, threw} = require('tap')
 const Chain = require('../../index.js')
 const state = {
