@@ -14,9 +14,8 @@ test('string#typecast', async (t) => {
   t.strictEqual(string.typecast(null), null, 'null literal')
   t.strictEqual(string.typecast('undefined'), undefined, 'undefined string value')
   t.strictEqual(string.typecast(undefined), undefined, 'undefined string value')
-  t.strictEqual(string.typecast(undefined), undefined, 'undefined string value')
   t.deepEqual(string.typecast({}), {}, 'non string value')
   t.deepEqual(string.typecast(''), '', 'empty string value')
-  t.deepEqual(string.typecast(''), '', 'empty string value')
+  t.deepEqual(string.typecast(Infinity), Infinity, 'Infinity returns input')
 
 }).catch(threw)

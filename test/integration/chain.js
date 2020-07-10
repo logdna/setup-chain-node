@@ -2,7 +2,7 @@
 
 const {test, threw} = require('tap')
 const Chain = require('../../lib/chain.js')
-const actions = require('../actions')
+const actions = require('../fixtures/actions/index.js')
 
 test('Setup chain', async (t) => {
   t.test('base chain', async (tt) => {
@@ -15,7 +15,7 @@ test('Setup chain', async (t) => {
     tt.ok((end - start) >= 10, 'sleep timeout elapsed')
   })
 
-  t.test('extended chain', async (tt) => {
+  t.test('extended chain with passed-in actions', async (tt) => {
     class ExtendedChain extends Chain {
       constructor(state) {
         super(state, actions)
@@ -67,5 +67,31 @@ test('Setup chain', async (t) => {
       new ExtendedChain().fake().execute()
     , /tasks must be an array of objects/i
     )
+  })
+
+  t.test('extended chain created with an existing state', async (tt) => {
+    class WithStateChain extends Chain {
+      constructor(state) {
+        super(state)
+      }
+    }
+    const state_param = {hello: 'there'}
+
+    const chain = new WithStateChain(state_param)
+    const hello = chain.lookup('#hello')
+    tt.equal(hello, 'there', 'State input was parsed and saved')
+    tt.deepEqual(chain.state.hello, 'there', 'Saved in `state` instance variable')
+  })
+
+  t.test('Default SetupChain (no actions, state); Only built-ins', async (tt) => {
+    const chain = new Chain(null, null)
+    tt.deepEqual(chain.state, {}, 'Empty state')
+    tt.equal(Object.keys(chain.actions).length, 4, 'Built-in action count')
+    tt.match(chain.actions, {
+      map: Function
+    , repeat: Function
+    , sleep: Function
+    , sort: Function
+    }, 'Built-in function names')
   })
 }).catch(threw)

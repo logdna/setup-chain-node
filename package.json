@@ -9,7 +9,7 @@
   "scripts": {
     "lint": "eslint .",
     "pretest": "npm run lint",
-    "test": "tap; cat .tap/tests.out | ./node_modules/.bin/tap-mocha-reporter xunit > coverage/test.xml",
+    "test": "tap; cat output.tap | ./node_modules/.bin/tap-mocha-reporter xunit > coverage/test.xml",
     "tap": "tap"
   },
   "repository": {
@@ -42,16 +42,13 @@
     "tap": "^14.10.7"
   },
   "tap": {
+    "100": true,
     "ts": false,
     "esm": false,
     "jsx": false,
     "browser": false,
-    "branches": 98,
-    "lines": 98,
-    "functions": 98,
-    "statements": 98,
     "reporter": "classic",
-    "output-file": ".tap/tests.out",
+    "output-file": "output.tap",
     "check-coverage": true,
     "files": [
       "test/**/*.js"
