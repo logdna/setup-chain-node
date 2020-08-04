@@ -69,6 +69,32 @@ test('Setup chain', async (t) => {
     )
   })
 
+  t.test('Custom action signatures are not auto-exposed', async (tt) => {
+    async function printNames(first, last) {
+      return `Hello, ${first} ${last}`
+    }
+    class ExtendedChain extends Chain {
+      constructor(state) {
+        super(state, {printNames})
+      }
+
+      printNames(first, last, label) {
+        this.tasks.push(['printNames', label, first, last])
+        return this
+      }
+    }
+
+    {
+      const state = await new ExtendedChain()
+        .printNames('Mr.', 'Wonderful', 'names')
+        .execute()
+
+      tt.match(state, {
+        names: 'Hello, Mr. Wonderful'
+      }, 'expected output')
+    }
+  })
+
   t.test('extended chain created with an existing state', async (tt) => {
     class WithStateChain extends Chain {
       constructor(state) {
