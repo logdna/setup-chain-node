@@ -282,7 +282,7 @@ console.log(state)
 {
   name_1: 'greg'
   name_2: 'fred'
-, greeting: ['Goodbye greg', 'Goodbye fred']
+, greeting_1: ['Goodbye greg', 'Goodbye fred']
 }
 
 ```
