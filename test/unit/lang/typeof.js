@@ -1,6 +1,7 @@
 'use strict'
 
 const {test, threw} = require('tap')
+const Moment = require('moment')
 const typeOf = require('../../../lib/lang/type-of.js')
 
 class FooBar {
@@ -59,6 +60,10 @@ test('typeOf', (t) => {
   , {
       value: () => {}
     , expected: 'function'
+    }
+  , {
+      value: Moment()
+    , expected: 'moment'
     }
   ]
   for (const current of cases) {

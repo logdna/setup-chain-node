@@ -1,5 +1,6 @@
 'use strict'
 
+const moment = require('moment')
 const {test, threw} = require('tap')
 const Chain = require('../../lib/chain.js')
 const actions = require('../fixtures/actions/index.js')
@@ -92,6 +93,39 @@ test('Setup chain', async (t) => {
       tt.match(state, {
         names: 'Hello, Mr. Wonderful'
       }, 'expected output')
+    }
+  })
+
+  t.test('extended chain w/ lookup functions', async (tt) => {
+    class MomentChain extends Chain {
+      constructor(state) {
+        super(state)
+      }
+
+      $now() {
+        return moment().utc().valueOf()
+      }
+
+      $dateadd(date, amount, units = 'm', format) {
+        const [_date, _amount, _units] = this.lookup([date, amount, units])
+        const out = moment(_date).subtract(_amount, _units)
+        return format ? this.$strftime(format, out) : out
+      }
+
+      $strftime(format = 'Y-MM-DD', date) {
+        const input = this.lookup(date) || undefined
+        return moment(input).utc().format(format)
+      }
+    }
+
+    const chain = new MomentChain()
+    {
+      const value = chain.lookup('!dateadd:!now,1,d')
+      tt.ok(value instanceof moment, 'is moment value')
+    }
+    {
+      const value = chain.lookup('!dateadd:!now,1,d,x')
+      tt.match(value, /\d+/, 'formatted number value')
     }
   })
 
