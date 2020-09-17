@@ -143,6 +143,34 @@ test('Setup chain', async (t) => {
     tt.deepEqual(chain.state.hello, 'there', 'Saved in `state` instance variable')
   })
 
+  t.test('chain function argument handling', async (tt) => {
+    class FunctionChain extends Chain {
+      constructor(state) {
+        super(state)
+      }
+
+      $reflect(...args) {
+        return args
+      }
+    }
+
+    const testCases = [
+      {input: '!reflect:one,two,three', expected: ['one', 'two', 'three']}
+    , {input: '!reflect:"one,two,three"', expected: ['one,two,three']}
+    , {input: '!reflect:one,true,three', expected: ['one', true, 'three']}
+    , {input: "!reflect:'one,two',three", expected: ['one,two', 'three']}
+    , {input: '!reflect:"one,two",three,"four,five",six', expected: ['one,two', 'three', 'four,five', 'six']}
+    , {input: '!reflect:four  ,five, false', expected: ['four', 'five', false]}
+    ]
+
+    const chain = new FunctionChain()
+    await chain.execute()
+
+    for (const testCase of testCases) {
+      tt.deepEqual(chain.lookup(testCase.input), testCase.expected, `"${testCase.input}" arguments correct`)
+    }
+  })
+
   t.test('Default SetupChain (no actions, state); Only built-ins', async (tt) => {
     const chain = new Chain(null, null)
     tt.deepEqual(chain.state, {}, 'Empty state')
@@ -152,6 +180,11 @@ test('Setup chain', async (t) => {
     , repeat: Function
     , sleep: Function
     , sort: Function
+    }, 'Built-in action names')
+
+    tt.match(chain, {
+      $random: Function
+    , $template: Function
     }, 'Built-in function names')
   })
 }).catch(threw)

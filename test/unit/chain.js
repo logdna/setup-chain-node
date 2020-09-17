@@ -83,4 +83,11 @@ test('create-chain#lookup', async (t) => {
     t.match(out, expected, 'can eval function in object')
     t.notEqual(out.rand, lookup.rand, 'random value generated')
   }
+
+  {
+    const expected = {tpl: '1, - [11] -  - 2'}
+    const lookup = {tpl: '!template:"{{#a}}, - [{{#g}}] - {{#missing}} - {{#b.c}}{{noprefix}}"'}
+    const out = chain.lookup(lookup)
+    t.deepEqual(out, expected, 'templated string replaced with values from the chain')
+  }
 }).catch(threw)
