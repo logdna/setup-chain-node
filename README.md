@@ -291,19 +291,37 @@ console.log(state)
 
 The `lookup` function has a limited ability to exeute simple functions when simple
 object path lookups aren't sufficient. The syntax for function execution is as follows.
-Simple arguments can be passed. If arguments are passed, numberic and boolean values will
-be cast to the appropriate type. Everything else will be handled as a string
+Simple arguments can be passed. If arguments are passed, numeric and boolean values will
+be cast to the appropriate type. Everything else will be handled as a string. String arguments
+must be quoted with either single or double quotes if the string contains a comma.
 
 ```
 !<name>:arg,arg,arg
+!<name>:"one,two",three
 ```
 
-The base chain class ships with a single function `random` that will generate a random HEX string.
-It accepts an optional single argument that specifies the numbe rof random bytes to generate
+### `random(<Number>)`
+Generates a random HEX string. It accepts an optional single argument that specifies 
+the number of random bytes to generate.
 
 ```javascript
 chain.lookup('!random:2') // 3830
 chain.lookup('!random:10') // eddbdf576eac2ded313d
+```
+
+### `template(<String>)`
+Returns a string with replacement patterns from the chain. Templates are rendered in the
+same sequence as other operations on the chain. Only the data from actions prior to the
+template function will be available for replacement. 
+
+Templates supports a basic bracket syntax for replacements:
+
+```javascript
+chain.set('name', 'World')
+chain.set('foo', {bar: "baz"})
+chain.lookup('!template:Hello {{#name}}') // Hello World
+chain.lookup('!template:Hello {{#name}} - {{#foo.bar}}') // Hello World - baz
+chain.lookup('!template:"Hello, my name is {{#name}}"') // Hello, my name is World
 ```
 
 ### Exposing a new function
