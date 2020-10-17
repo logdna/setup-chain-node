@@ -148,7 +148,7 @@ to each item.  Although this uses Javascript's `sort` function under the hood (w
 calling `setupChain.sort` will NOT mutate the input.  This is done for consistency since
 the `lookup` result will sometimes provide a new array, and sometimes not.
 
-## `repeat(<Number>, <String>, <Object>)`
+## `repeat(<Number>, <String>, <Object>, <String>)`
 
 ### Parameters
 
@@ -158,6 +158,7 @@ the `lookup` result will sometimes provide a new array, and sometimes not.
 * **opts** [Object][]: Any options that the named action requires.  Currently, this
   only supports actions with an `(opts)` signature.  Custom signatures are not yet
   supported.
+* **label** [String][]: Optional label in which to store the result.
 
 ## `execute()`
 
