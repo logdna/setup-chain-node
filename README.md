@@ -1,6 +1,33 @@
-# logdna-test-setup-chain
+## logdna-test-setup-chain
 
-![Test Suite](https://github.com/answerbook/logdna-test-setup-chain/workflows/Test%20Suite/badge.svg)
+<!-- vim-markdown-toc GFM -->
+
+* [Program Flow](#program-flow)
+    * [Auto-Exposing Action Handlers](#auto-exposing-action-handlers)
+    * [Custom Action Signatures](#custom-action-signatures)
+    * [Required Task Format](#required-task-format)
+* [API](#api)
+  * [`set(<String>, <Any>)`](#setstring-any)
+    * [Parmeters](#parmeters)
+  * [`lookup(<String>|<Object>|<Array>)`](#lookupstringobjectarray)
+    * [Parameters](#parameters)
+  * [`map(<Array>|<String>, <Function>, <String>)`](#maparraystring-function-string)
+    * [Parameters](#parameters-1)
+  * [`sort(<Array>|<String>, <Function>, <String>)`](#sortarraystring-function-string)
+    * [Parameters](#parameters-2)
+  * [`repeat(<Number>, <String>, <Object>, <String>)`](#repeatnumber-string-object-string)
+    * [Parameters](#parameters-3)
+  * [`execute()`](#execute)
+  * [`sleep(<Object>)`](#sleepobject)
+    * [Parameters](#parameters-4)
+  * [Creating a chain](#creating-a-chain)
+  * [LAST](#last)
+    * [Interfaces](#interfaces)
+      * [`Node`](#node)
+      * [`Point`](#point)
+      * [`Position`](#position)
+
+<!-- vim-markdown-toc -->
 
 This is a base class for implementing seed and resource data for test suites.  Integration tests that rely on
 other data to exist prior to testing new features can use this package to easily generate
@@ -12,7 +39,7 @@ kinds of repetitive tasks in the test suite.
 $ npm install @answerbook/logdna-test-setup-chain [--save-dev]
 ```
 
-## Program Flow
+# Program Flow
 
 The `SetupChain` can be given `action` functions which will ultimately be executed by `async/await`
 in the order they are given.  Action functions are through builder functions (usually with the same name),
@@ -213,11 +240,161 @@ class MyChain extends SetupChain {
 }
 ```
 
+## LAST
+
+![last](./asset/last.png)
+
+**L**ookup **A**bstract **S**yntax **T**ree
+
+`last` is a specification for representing the [lookup](#lookupstringobjectarray)
+format in a syntax tree. It implements the [unist][] spec
+
+### Interfaces
+
+#### `Node`
+
+Represents the base stucture of all AST nodes
+
+```idl
+interface Node {
+  type: string
+  position: Position?
+}
+```
+
+#### `Point`
+
+Represents one place in a source file.
+
+* `column`: (1-indexed integer) represents a column in the source input
+* `offset`: (0-indexed integer) represents a character in the source input
+* `line`: (1-indexed integer) represents the line in the source input
+
+```idl
+interface Point {
+  line: number >= 1
+  column: number >= 1
+  offset: number >= 0?
+}
+```
+
+#### `Position`
+
+Position represents the location of a node in a source file.
+
+* `start`: Represents the place of the first character of the parsed source region
+* `end`: Represents the place of the first character after the parsed source region
+
+ ```idl
+interface Position {
+  start: Point
+  end: Point
+}
+```
+
+### Nodes
+
+#### `Root`
+
+The entry point of a last([unist][]) syntax tree. It has no parents
+
+#### `Literal`
+
+Represents a node containing a fully resolved literal value.
+This may be a `number`, `boolean`, `string`, `null` or `undefined` value.
+As far as the parser is concerned, no further processing is required.
+
+```idl
+interface Literal <: Node {
+  value: string
+}
+```
+
+#### `Function`
+
+Represents a function call where `children` represent the positional arguments
+
+```idl
+interface Function <: Node {
+  value: string
+  children: [Node]
+}
+```
+
+```gfm
+!foo:1
+```
+
+Yields:
+
+```javascript
+{
+  type: 'root'
+, children: [{
+    type: 'function'
+  , value: 'foo'
+  , children: [
+      {type: 'literal', value: 1}
+    ]
+  }]
+}
+```
+
+
+```gfm
+!foo(1, bar(2))
+```
+
+Yields:
+
+```javascript
+{
+  type: 'root'
+, children: [{
+    type: 'function'
+  , value: 'foo'
+  , children: [
+      {type: 'literal', value: 1}
+    , {
+        type: 'function'
+      , value: 'bar'
+      , children: [
+          {type: 'literal', value: 2}
+        ]
+      }
+    ]
+  }]
+}
+```
+#### `Lookup`
+
+```idl
+interface Function <: Node {
+  value: string
+}
+```
+
+```gfm
+ #foo.bar
+```
+
+Yields:
+
+```javascript
+{
+  type: 'root'
+, children: [{
+    type: 'lookup'
+  , value: 'foo.bar'
+  }]
+}
+```
+
 ## Usage
 
 In your test suites you can use a chain instance to perform a series of async tasks
 while storing the result in a single object. Actions can do anything from returning
-random data, inserting records into a datastore, to sending log entries to a remote parser.
+random data, inserting records into a data store, to sending log entries to a remote parser.
 
 
 ```javascript
@@ -232,7 +409,6 @@ An action is simply an async function that performs some action and optionally r
 some value. Every action function is called in the context of the Chain instance.
 
 ### Adding a new action
-
 
 ```javascript
 const actions = {
@@ -290,15 +466,18 @@ console.log(state)
 
 ## Functions
 
-The `lookup` function has a limited ability to exeute simple functions when simple
-object path lookups aren't sufficient. The syntax for function execution is as follows.
-Simple arguments can be passed. If arguments are passed, numeric and boolean values will
-be cast to the appropriate type. Everything else will be handled as a string. String arguments
+The `lookup` function has the ability to execute functions when simple object path lookups aren't sufficient.
+The syntax for function execution is as follows. Simple arguments can be passed.
+If arguments are passed, numeric and boolean values will be casted to the
+appropriate type. Everything else will be handled as a string. String arguments
 must be quoted with either single or double quotes if the string contains a comma.
+Functions may also be used as arguments, but must use the more conventional call `()`
+syntax to ensure arguments are passed appropriately.
 
 ```
 !<name>:arg,arg,arg
 !<name>:"one,two",three
+!<name>("one,two", !random:1, !foo("bar", "baz"), #nested.key)
 ```
 
 ### `random(<Number>)`
@@ -320,8 +499,8 @@ Templates supports a basic bracket syntax for replacements:
 ```javascript
 chain.set('name', 'World')
 chain.set('foo', {bar: "baz"})
-chain.lookup('!template:Hello {{#name}}') // Hello World
-chain.lookup('!template:Hello {{#name}} - {{#foo.bar}}') // Hello World - baz
+chain.lookup('!template:"Hello {{#name}}"') // Hello World
+chain.lookup('!template:"Hello {{#name}} - {{#foo.bar}}"') // Hello World - baz
 chain.lookup('!template:"Hello, my name is {{#name}}"') // Hello, my name is World
 ```
 
@@ -347,3 +526,4 @@ new MyChain().lookup('!max:2,10,5,3') // 10
 [Array]: https://mdn.io/array
 [Number]: https://mdn.io/number
 [Function]: https://mdn.io/function
+[unist]: https://github.com/syntax-tree/unist

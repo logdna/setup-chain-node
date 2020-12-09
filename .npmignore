@@ -1,7 +1,10 @@
 test/
 coverage/
+asset/
+scripts/
 .nyc_output/
 *.vim
 *.swp
 *.tap
+*.save
 .taprc

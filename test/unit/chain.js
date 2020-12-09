@@ -19,12 +19,15 @@ test('create-chain#lookup', async (t) => {
   await chain.execute()
 
   t.strictEqual(chain.lookup(), null, 'no input returns null')
+  t.strictEqual(chain.lookup(null), null, 'no input returns null')
   t.strictEqual(chain.lookup('a'), 'a', 'returns literal values')
+  t.strictEqual(chain.lookup(true), true, 'returns literal values')
+  t.strictEqual(chain.lookup(1), 1, 'returns literal values')
   t.strictEqual(chain.lookup('#a'), 1, 'can lookup single values')
   t.strictEqual(chain.lookup('#x'), 1000, 'initial values accessable')
   t.throws(() => {
     chain.lookup('#')
-  }, /invalid state lookup/i)
+  }, /expecting: one of these possible token sequences:/i)
 
   {
     const val = chain.lookup('!random')
@@ -77,6 +80,12 @@ test('create-chain#lookup', async (t) => {
   }
 
   {
+    const expected = {key: 11, values: [2, 10, {foo: 3}]}
+    const lookup = {key: '#g', values: ['#b.c', '#f', {foo: '#b.d.e'}]}
+    t.deepEqual(chain.lookup(lookup), expected, 'can populate nested object/array')
+  }
+
+  {
     const expected = {key: 11, rand: String}
     const lookup = {key: '#g', rand: '!random'}
     const out = chain.lookup(lookup)
@@ -92,4 +101,16 @@ test('create-chain#lookup', async (t) => {
     const out = chain.lookup(lookup)
     t.deepEqual(out, expected, 'templated string replaced with values from the chain')
   }
+
+  {
+    const expected = {tpl: /the value [a-f0-9]{6} is random/i}
+    const lookup = {
+      tpl: '!template:"the value {{!random:3}} is random"'
+    }
+
+    const out = chain.lookup(lookup)
+    t.match(out, expected, 'templated string values support function calls')
+  }
+
+
 }).catch(threw)
