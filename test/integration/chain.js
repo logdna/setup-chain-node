@@ -160,7 +160,7 @@ test('Setup chain', async (t) => {
     , {input: '!reflect:one,true,three', expected: ['one', true, 'three']}
     , {input: "!reflect:'one,two',three", expected: ['one,two', 'three']}
     , {input: '!reflect:four  ,five, false', expected: ['four', 'five', false]}
-    , {input: '!reflect:one:two,three', expected: ['one:two', 'three']}
+    , {input: '!reflect:"one:two",three', expected: ['one:two', 'three']}
     , {input: '!reflect:"one:two,three"', expected: ['one:two,three']}
     , {
         input: '!reflect:"one,two",three,"four,five",six'

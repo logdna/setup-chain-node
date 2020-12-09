@@ -11,7 +11,8 @@
     "commitlint": "commitlint-logdna --from=origin/master",
     "pretest": "npm run lint && npm run commitlint",
     "test": "tap; cat output.tap | ./node_modules/.bin/tap-mocha-reporter xunit > coverage/test.xml",
-    "tap": "tap"
+    "tap": "tap",
+    "generate": "scripts/generate.js"
   },
   "repository": {
     "type": "git",
@@ -26,7 +27,7 @@
     "url": "https://github.com/answerbook/logdna-test-setup-chain/issues"
   },
   "eslintConfig": {
-    "extends": "eslint-config-logdna",
+    "extends": "logdna",
     "root": true,
     "ignorePatterns": [
       "node_modules/",
@@ -67,6 +68,7 @@
     ]
   },
   "dependencies": {
-    "@answerbook/stdlib": "^1.2.0"
+    "@answerbook/stdlib": "^1.2.0",
+    "chevrotain": "^7.0.3"
   }
 }

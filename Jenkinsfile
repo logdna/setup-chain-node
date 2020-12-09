@@ -47,14 +47,13 @@ pipeline {
 
           stage('Test') {
             steps {
-              sh 'node -v'
-              sh 'npm -v'
+              sh 'npm run lint -- -f junit -o coverage/lint.xml'
               sh 'npm test'
             }
 
             post {
               always {
-                junit 'coverage/test.xml'
+                junit 'coverage/*.xml'
                 publishHTML target: [
                   allowMissing: false,
                   alwaysLinkToLastBuild: false,
