@@ -52,7 +52,8 @@
     "output-file": "output.tap",
     "check-coverage": true,
     "files": [
-      "test/**/*.js"
+      "test/unit/",
+      "test/integration/"
     ],
     "coverage-report": [
       "text",
@@ -64,5 +65,8 @@
       "--exclude=test/",
       "--exclude=coverage/"
     ]
+  },
+  "dependencies": {
+    "@answerbook/stdlib": "^1.2.0"
   }
 }
