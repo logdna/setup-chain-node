@@ -19,9 +19,9 @@ test('create-chain#lookup', async (t) => {
   await chain.execute()
 
   t.strictEqual(chain.lookup(), null, 'no input returns null')
-  t.equal(chain.lookup('a'), 'a', 'returns literal values')
-  t.equal(chain.lookup('#a'), 1, 'can lookup single values')
-  t.equal(chain.lookup('#x'), 1000, 'initial values accessable')
+  t.strictEqual(chain.lookup('a'), 'a', 'returns literal values')
+  t.strictEqual(chain.lookup('#a'), 1, 'can lookup single values')
+  t.strictEqual(chain.lookup('#x'), 1000, 'initial values accessable')
   t.throws(() => {
     chain.lookup('#')
   }, /invalid state lookup/i)
@@ -29,7 +29,7 @@ test('create-chain#lookup', async (t) => {
   {
     const val = chain.lookup('!random')
     t.type(val, 'string')
-    t.notEqual(val, '!random', 'function call executed')
+    t.notStrictEqual(val, '!random', 'function call executed')
   }
 
   {
@@ -81,12 +81,14 @@ test('create-chain#lookup', async (t) => {
     const lookup = {key: '#g', rand: '!random'}
     const out = chain.lookup(lookup)
     t.match(out, expected, 'can eval function in object')
-    t.notEqual(out.rand, lookup.rand, 'random value generated')
+    t.notStrictEqual(out.rand, lookup.rand, 'random value generated')
   }
 
   {
     const expected = {tpl: '1, - [11] -  - 2'}
-    const lookup = {tpl: '!template:"{{#a}}, - [{{#g}}] - {{#missing}} - {{#b.c}}{{noprefix}}"'}
+    const lookup = {
+      tpl: '!template:"{{#a}}, - [{{#g}}] - {{#missing}} - {{#b.c}}{{noprefix}}"'
+    }
     const out = chain.lookup(lookup)
     t.deepEqual(out, expected, 'templated string replaced with values from the chain')
   }

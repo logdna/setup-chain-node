@@ -26,9 +26,7 @@
     "url": "https://github.com/answerbook/logdna-test-setup-chain/issues"
   },
   "eslintConfig": {
-    "extends": [
-      "@answerbook/eslint-config-logdna"
-    ],
+    "extends": "eslint-config-logdna",
     "root": true,
     "ignorePatterns": [
       "node_modules/",
@@ -38,9 +36,9 @@
   "homepage": "https://github.com/answerbook/logdna-test-setup-chain#readme",
   "devDependencies": {
     "@answerbook/commitlint-config-logdna": "^1.2.0",
-    "@answerbook/eslint-config-logdna": "^5.2.0",
     "casual": "^1.6.2",
     "eslint": "^7.4.0",
+    "eslint-config-logdna": "^4.0.0",
     "moment": "^2.27.0",
     "tap": "^14.10.7"
   },

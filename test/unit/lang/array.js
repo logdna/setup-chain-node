@@ -5,7 +5,7 @@ const array = require('../../../lib/lang/array/index.js')
 
 test('Exports as expected', async (t) => {
   const entries = Object.entries(array)
-  t.equal(entries.length, 1, 'function count')
+  t.strictEqual(entries.length, 1, 'function count')
   t.match(array, {
     toArray: Function
   }, 'function names')
