@@ -6,7 +6,7 @@ const object = require('../../../lib/lang/object/index.js')
 
 test('Exports as expected', async (t) => {
   const entries = Object.entries(object)
-  t.equal(entries.length, 2, 'function count')
+  t.strictEqual(entries.length, 2, 'function count')
   t.match(object, {
     getProperty: Function
   , hasOwnProperty: Function
@@ -31,9 +31,9 @@ test('object#getPropery', async (t) => {
     }
   }
 
-  t.equal(gp(input), undefined, 'default string')
-  t.equal(gp(input, 'l1.l1p2.l3p1'), 4, 'default separator')
-  t.equal(gp(input, 'l1-l1p2-l3p1', '-'), 4, 'custom separator')
-  t.equal(gp(input, 'l1.l1p2.l3p2.l4p1'), null, 'props beyond null values')
-  t.equal(gp(input, 'l1.l1p2.nope'), undefined, 'no match')
+  t.strictEqual(gp(input), undefined, 'default string')
+  t.strictEqual(gp(input, 'l1.l1p2.l3p1'), 4, 'default separator')
+  t.strictEqual(gp(input, 'l1-l1p2-l3p1', '-'), 4, 'custom separator')
+  t.strictEqual(gp(input, 'l1.l1p2.l3p2.l4p1'), null, 'props beyond null values')
+  t.strictEqual(gp(input, 'l1.l1p2.nope'), undefined, 'no match')
 }).catch(threw)

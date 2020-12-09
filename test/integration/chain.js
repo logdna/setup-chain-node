@@ -139,7 +139,7 @@ test('Setup chain', async (t) => {
 
     const chain = new WithStateChain(state_param)
     const hello = chain.lookup('#hello')
-    tt.equal(hello, 'there', 'State input was parsed and saved')
+    tt.strictEqual(hello, 'there', 'State input was parsed and saved')
     tt.deepEqual(chain.state.hello, 'there', 'Saved in `state` instance variable')
   })
 
@@ -159,24 +159,31 @@ test('Setup chain', async (t) => {
     , {input: '!reflect:"one,two,three"', expected: ['one,two,three']}
     , {input: '!reflect:one,true,three', expected: ['one', true, 'three']}
     , {input: "!reflect:'one,two',three", expected: ['one,two', 'three']}
-    , {input: '!reflect:"one,two",three,"four,five",six', expected: ['one,two', 'three', 'four,five', 'six']}
     , {input: '!reflect:four  ,five, false', expected: ['four', 'five', false]}
     , {input: '!reflect:one:two,three', expected: ['one:two', 'three']}
     , {input: '!reflect:"one:two,three"', expected: ['one:two,three']}
+    , {
+        input: '!reflect:"one,two",three,"four,five",six'
+      , expected: ['one,two', 'three', 'four,five', 'six']
+      }
     ]
 
     const chain = new FunctionChain()
     await chain.execute()
 
     for (const testCase of testCases) {
-      tt.deepEqual(chain.lookup(testCase.input), testCase.expected, `"${testCase.input}" arguments correct`)
+      tt.deepEqual(
+        chain.lookup(testCase.input)
+      , testCase.expected
+      , `"${testCase.input}" arguments correct`
+      )
     }
   })
 
   t.test('Default SetupChain (no actions, state); Only built-ins', async (tt) => {
     const chain = new Chain(null, null)
     tt.deepEqual(chain.state, {}, 'Empty state')
-    tt.equal(Object.keys(chain.actions).length, 4, 'Built-in action count')
+    tt.strictEqual(Object.keys(chain.actions).length, 4, 'Built-in action count')
     tt.match(chain.actions, {
       map: Function
     , repeat: Function
