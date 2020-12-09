@@ -8,7 +8,8 @@
   },
   "scripts": {
     "lint": "eslint .",
-    "pretest": "npm run lint",
+    "commitlint": "commitlint-logdna --from=origin/master",
+    "pretest": "npm run lint && npm run commitlint",
     "test": "tap; cat output.tap | ./node_modules/.bin/tap-mocha-reporter xunit > coverage/test.xml",
     "tap": "tap"
   },
@@ -36,6 +37,7 @@
   },
   "homepage": "https://github.com/answerbook/logdna-test-setup-chain#readme",
   "devDependencies": {
+    "@answerbook/commitlint-config-logdna": "^1.2.0",
     "@answerbook/eslint-config-logdna": "^5.2.0",
     "casual": "^1.6.2",
     "eslint": "^7.4.0",
