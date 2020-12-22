@@ -8,12 +8,24 @@ const actions = require('../fixtures/actions/index.js')
 test('Setup chain', async (t) => {
   t.test('base chain', async (tt) => {
     const start = new Date()
-    await new Chain()
+    const state = await new Chain({
+      a: 'b'
+    , c: {
+        d: 'e'
+      }
+    })
       .sleep()
       .execute()
 
     const end = new Date()
     tt.ok((end - start) >= 10, 'sleep timeout elapsed')
+    tt.deepEqual(state, {
+      a: 'b'
+    , c: {
+        d: 'e'
+      }
+    , sleep: undefined
+    }, 'initial state passed through constructor')
   })
 
   t.test('extended chain with passed-in actions', async (tt) => {
@@ -183,12 +195,13 @@ test('Setup chain', async (t) => {
   t.test('Default SetupChain (no actions, state); Only built-ins', async (tt) => {
     const chain = new Chain(null, null)
     tt.deepEqual(chain.state, {}, 'Empty state')
-    tt.strictEqual(Object.keys(chain.actions).length, 4, 'Built-in action count')
+    tt.strictEqual(Object.keys(chain.actions).length, 5, 'Built-in action count')
     tt.match(chain.actions, {
       map: Function
     , repeat: Function
     , sleep: Function
     , sort: Function
+    , set: Function
     }, 'Built-in action names')
 
     tt.match(chain, {

@@ -7,7 +7,7 @@
     * [Custom Action Signatures](#custom-action-signatures)
     * [Required Task Format](#required-task-format)
 * [API](#api)
-  * [`set(<String>, <Any>)`](#setstring-any)
+  * [`set(<String>|<Object>, <Any>)`](#setstringobject-any)
     * [Parmeters](#parmeters)
   * [`lookup(<String>|<Object>|<Array>)`](#lookupstringobjectarray)
     * [Parameters](#parameters)
@@ -20,6 +20,7 @@
   * [`execute()`](#execute)
   * [`sleep(<Object>)`](#sleepobject)
     * [Parameters](#parameters-4)
+  * [`reset()`](#reset)
   * [Creating a chain](#creating-a-chain)
   * [LAST](#last)
     * [Interfaces](#interfaces)
@@ -43,7 +44,7 @@ $ npm install @answerbook/logdna-test-setup-chain [--save-dev]
 
 The `SetupChain` can be given `action` functions which will ultimately be executed by `async/await`
 in the order they are given.  Action functions are through builder functions (usually with the same name),
-placing a task onto a queue in the order specified, but they are not run until `.execute()` is called.  This
+placing a task onto a queue in the order specified, but they are not run until [.execute()](#execute) is called.  This
 requires a handler function added to the `SetupChain` for each action to expose it.  This can
 be done automatically (see below), or defined in the sub-class by the developer.
 
@@ -109,25 +110,38 @@ await chain.execute()
 }
 ```
 
-## `set(<String>, <Any>)`
+## `set(<String>|<Object>, <Any>)`
 
 ### Parmeters
 
-* **key** [String][]: The name of the key to set in the final output
-* **value** `Any`: The value to be saved in `setupChain.state` and also returned
-  by `execute`.
+* **key** [String][]|[Object][]: The name of the key to set in the final output
+* **value** `Any`(_optional_): The value to be saved in `setupChain.state` and also returned
+  by `execute`. If the first parameter is an object, this parameter will be ignored.
+  Each of the key / value pairs will be used as function arguments
 
 Manually sets a value that will be saved in the final output and persisted across
 executions.
 
 ```javascript
-
 const chain = new SetupChain()
 
 chain.set('foo', 1)
 await chain.execute()
 
 > {foo: 1}
+```
+
+```javascript
+const chain = new SetupChain()
+
+chain.set({
+  foo: 1
+, 'a.b': '#foo'
+, bar: '!random'
+})
+await chain.execute()
+
+> {foo: 1, bar: 'af4b31', a: {b: 1}}
 ```
 
 ## `lookup(<String>|<Object>|<Array>)`
@@ -139,10 +153,10 @@ await chain.execute()
 Resolves lookup value. This function is generally used by actions to resolve values
 from the chain as it is executes.
 
-* If the input starts with a `#` symbol it is considered to be a lookup path and will
+* If the input is a string, and starts with a `#` symbol it is considered to be a lookup path and will
   return the requested value from internal state if found.
-* If the input starts with a `!` symbol it is considered a function call and will call
-  any registered from the chain instance of store the result in internal state..
+* If the input is a string, and starts with a `!` symbol it is considered a function call and will call
+  any registered actions from the chain instance and store the result in internal state.
 * If the input is an object, each key in the object will be resolved following the above rules
 * If the input is an array, each item in the array will be resolved following the above rules
 
@@ -190,7 +204,7 @@ the `lookup` result will sometimes provide a new array, and sometimes not.
 ## `execute()`
 
 Executes each task added sequentially and collects the results into a single object.
-The results for `execute` are returned, but also stored in `setupChain.state`.
+The results for `execute` are returned. The internal state will be Persisted.
 
 **returns**: [Object][]
 
@@ -217,6 +231,12 @@ await new SetupChain()
 
 This is a builder function for the `sleep` action.
 It will Waits for a specified number of milliseconds before returning.
+
+**returns**: SetupChain
+
+## `reset()`
+
+Manually clears internal state and any pending tasks
 
 **returns**: SetupChain
 
@@ -247,7 +267,9 @@ class MyChain extends SetupChain {
 **L**ookup **A**bstract **S**yntax **T**ree
 
 `last` is a specification for representing the [lookup](#lookupstringobjectarray)
-format in a syntax tree. It implements the [unist][] spec
+input format as an abstract syntax tree. It implements the [unist][] spec.
+
+![syntax diagram](./asset/syntax.png)
 
 ### Interfaces
 
