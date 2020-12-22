@@ -320,18 +320,6 @@ interface Position {
 
 The entry point of a last([unist][]) syntax tree. It has no parents
 
-#### `Literal`
-
-Represents a node containing a fully resolved literal value.
-This may be a `number`, `boolean`, `string`, `null` or `undefined` value.
-As far as the parser is concerned, no further processing is required.
-
-```idl
-interface Literal <: Node {
-  value: string
-}
-```
-
 #### `Function`
 
 Represents a function call where `children` represent the positional arguments

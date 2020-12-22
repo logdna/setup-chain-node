@@ -10,75 +10,25 @@ test('last parser', async (t) => {
     parser.reset()
   })
 
-  t.test('string literal', async (t) => {
-    t.test('double quoted string', async (t) => {
-      const {tokens} = lexer.tokenize('"double quote"')
-      parser.input = tokens
-      const cst = parser.last()
-
-      t.match(cst, {
-        name: 'last'
-      , children: {
-          string: [{
-            image: '"double quote"'
-          , startOffset: 0
-          , startLine: 1
-          , startColumn: 1
-          , tokenTypeIdx: Number
-          , tokenType: {
-              name: 'string'
-            , PATTERN: RegExp
-            }
-          }]
-        }
-      }, 'double quoted string token')
-    })
-
-    t.test('single quoted string', async (t) => {
-      const {tokens} = lexer.tokenize("'single quote'")
-      parser.input = tokens
-      const cst = parser.last()
-
-      t.match(cst, {
-        name: 'last'
-      , children: {
-          string: [{
-            image: "'single quote'"
-          , startOffset: 0
-          , startLine: 1
-          , startColumn: 1
-          , tokenTypeIdx: Number
-          , tokenType: {
-              name: 'string'
-            , PATTERN: RegExp
-            }
-          }]
-        }
-      }, 'single quoted string token')
-    })
-  })
-
-  t.test('identifier', async (t) => {
-    const {tokens} = lexer.tokenize('foobar')
+  t.test('unparsable input', async (t) => {
+    const {tokens} = lexer.tokenize('foobarbaz')
     parser.input = tokens
-    const cst = parser.last()
+    parser.last()
 
-    t.match(cst, {
-      name: 'last'
-    , children: {
-        identifier: [{
-          image: 'foobar'
-        , startOffset: 0
-        , startLine: 1
-        , startColumn: 1
-        , tokenTypeIdx: Number
-        , tokenType: {
-            name: 'identifier'
-          , PATTERN: RegExp
-          }
-        }]
+    t.strictEqual(parser._errors.length, 1, 'number of parser errors')
+
+    const [error] = parser._errors
+    t.match(error, {
+      name: /noviablealtexception/i
+    , message: /^expecting: one of these possible token sequences/i
+    , token: {
+        image: 'foobarbaz'
+      , tokenType: {
+          name: 'identifier'
+        , PATTERN: RegExp
+        }
       }
-    }, 'literal identifier token')
+    })
   })
 
   t.test('object lookup', async (t) => {
@@ -92,28 +42,56 @@ test('last parser', async (t) => {
         lookup: [{
           name: 'lookup'
         , children: {
-            hash: [{
-              image: '#'
-            , startOffset: 0
-            , startLine: 1
-            , startColumn: 1
-            , tokenTypeIdx: Number
-            , tokenType: {
-                name: 'hash'
-              , PATTERN: /#/
+            hash: [
+              {
+                image: '#'
+              , startOffset: 0
+              , startLine: 1
+              , startColumn: 1
+              , tokenTypeIdx: 7
+              , tokenType: {
+                  name: 'hash'
+                , PATTERN: RegExp
+                }
               }
-            }]
-          , objectpath: [{
-              image: 'foobar.test'
-            , startOffset: 1
-            , startLine: 1
-            , startColumn: 2
-            , tokenTypeIdx: Number
-            , tokenType: {
-                name: 'objectpath'
-              , PATTERN: RegExp
+            ]
+          , identifier: [
+              {
+                image: 'foobar'
+              , startOffset: 1
+              , startLine: 1
+              , startColumn: 2
+              , tokenTypeIdx: 8
+              , tokenType: {
+                  name: 'identifier'
+                , PATTERN: RegExp
+                }
               }
-            }]
+            , {
+                image: 'test'
+              , startOffset: 8
+              , startLine: 1
+              , startColumn: 9
+              , tokenTypeIdx: 8
+              , tokenType: {
+                  name: 'identifier'
+                , PATTERN: RegExp
+                }
+              }
+            ]
+          , dot: [
+              {
+                image: '.'
+              , startOffset: 7
+              , startLine: 1
+              , startColumn: 8
+              , tokenTypeIdx: 5
+              , tokenType: {
+                  name: 'dot'
+                , PATTERN: '.'
+                }
+              }
+            ]
           }
         }]
       }
@@ -132,30 +110,32 @@ test('last parser', async (t) => {
           fn: [{
             name: 'fn'
           , children: {
-              bang: [{
-                image: '!'
-              , startOffset: 0
-              , startLine: 1
-              , startColumn: 1
-              , tokenTypeIdx: Number
-              , tokenType: {
-                  name: 'bang'
-                , PATTERN: /!/
+              bang: [
+                {
+                  image: '!'
+                , startOffset: 0
+                , startLine: 1
+                , startColumn: 1
+                , tokenTypeIdx: 3
+                , tokenType: {
+                    name: 'bang'
+                  , PATTERN: RegExp
+                  }
                 }
-              }]
-            , identifier: [{
-                image: 'whizbang'
-              , startOffset: 1
-              , startLine: 1
-              , startColumn: 2
-              , tokenTypeIdx: Number
-              , tokenType: {
-                  name: 'identifier'
-                , PATTERN: RegExp
+              ]
+            , identifier: [
+                {
+                  image: 'whizbang'
+                , startOffset: 1
+                , startLine: 1
+                , startColumn: 2
+                , tokenTypeIdx: 8
+                , tokenType: {
+                    name: 'identifier'
+                  , PATTERN: RegExp
+                  }
                 }
-              }]
-            , callarguments: null
-            , shortarguments: null
+              ]
             }
           }]
         }
@@ -173,57 +153,109 @@ test('last parser', async (t) => {
           fn: [{
             name: 'fn'
           , children: {
-              bang: [{
-                image: '!'
-              , startOffset: 0
-              , startLine: 1
-              , startColumn: 1
-              , tokenTypeIdx: Number
-              , tokenType: {
-                  name: 'bang'
-                , PATTERN: /!/
+              bang: [
+                {
+                  image: '!'
+                , startOffset: 0
+                , startLine: 1
+                , startColumn: 1
+                , tokenTypeIdx: 3
+                , tokenType: {
+                    name: 'bang'
+                  , PATTERN: RegExp}
                 }
-              }]
-            , identifier: [{
-                image: 'whizbang'
-              , startOffset: 1
-              , startLine: 1
-              , startColumn: 2
-              , tokenTypeIdx: Number
-              , tokenType: {
-                  name: 'identifier'
-                , PATTERN: RegExp
+              ]
+            , identifier: [
+                {
+                  image: 'whizbang'
+                , startOffset: 1
+                , startLine: 1
+                , startColumn: 2
+                , tokenTypeIdx: 8
+                , tokenType: {
+                    name: 'identifier'
+                  , PATTERN: RegExp
+                  }
                 }
-              }]
-            , callarguments: null
-            , shortarguments: [{
-                name: 'shortarguments'
-              , children: {
-                  colon: [{
-                    image: ':'
-                  }]
-                , arguments: [{
-                    name: 'arguments'
-                  , children: {
-                      arg: [{
-                        name: 'arg'
-                      , children: {
-                          number: [{
-                            image: '1'
-                          }]
+              ]
+            , shortarguments: [
+                {
+                  name: 'shortarguments'
+                , children: {
+                    colon: [
+                      {
+                        image: ':'
+                      , startOffset: 9
+                      , startLine: 1
+                      , startColumn: 10
+                      , tokenTypeIdx: 6
+                      , tokenType: {
+                          name: 'colon'
+                        , PATTERN: ':'
                         }
-                      }, {
-                        name: 'arg'
+                      }
+                    ]
+                  , arguments: [
+                      {
+                        name: 'arguments'
                       , children: {
-                          string: [{
-                            image: '"2,3"'
-                          }]
+                          arg: [
+                            {
+                              name: 'arg'
+                            , children: {
+                                identifier: [
+                                  {
+                                    image: '1'
+                                  , startOffset: 10
+                                  , startLine: 1
+                                  , startColumn: 11
+                                  , tokenTypeIdx: 8
+                                  , tokenType: {
+                                      name: 'identifier'
+                                    , PATTERN: RegExp
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          , {
+                              name: 'arg'
+                            , children: {
+                                string: [
+                                  {
+                                    image: '"2,3"'
+                                  , startOffset: 12
+                                  , startLine: 1
+                                  , startColumn: 13
+                                  , tokenTypeIdx: 11
+                                  , tokenType: {
+                                      name: 'string'
+                                    , PATTERN: RegExp
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        , comma: [
+                            {
+                              image: ','
+                            , startOffset: 11
+                            , startLine: 1
+                            , startColumn: 12
+                            , tokenTypeIdx: 4
+                            , tokenType: {
+                                name: 'comma'
+                              , PATTERN: ','
+                              }
+                            }
+                          ]
                         }
-                      }]
-                    }
-                  }]
+                      }
+                    ]
+                  }
                 }
-              }]
+              ]
             }
           }]
         }
@@ -241,46 +273,123 @@ test('last parser', async (t) => {
           fn: [{
             name: 'fn'
           , children: {
-              bang: [{
-                image: '!'
-              , tokenType: {
-                  name: 'bang'
-                , PATTERN: /!/
+              bang: [
+                {
+                  image: '!'
+                , startOffset: 0
+                , startLine: 1
+                , startColumn: 1
+                , tokenTypeIdx: 3
+                , tokenType: {
+                    name: 'bang'
+                  , PATTERN: RegExp
+                  }
                 }
-              }]
-            , identifier: [{
-                image: 'whizbang'
-              , tokenType: {
-                  name: 'identifier'
-                , PATTERN: RegExp
+              ]
+            , identifier: [
+                {
+                  image: 'whizbang'
+                , startOffset: 1
+                , startLine: 1
+                , startColumn: 2
+                , tokenTypeIdx: 8
+                , tokenType: {
+                    name: 'identifier'
+                  , PATTERN: RegExp
+                  }
                 }
-              }]
-            , shortarguments: null
-            , callarguments: [{
-                name: 'callarguments'
-              , children: {
-                  arguments: [{
-                    name: 'arguments'
-                  , children: {
-                      arg: [{
-                        name: 'arg'
-                      , children: {
-                          number: [{
-                            image: '1'
-                          }]
+              ]
+            , callarguments: [
+                {
+                  name: 'callarguments'
+                , children: {
+                    lparen: [
+                      {
+                        image: '('
+                      , startOffset: 9
+                      , startLine: 1
+                      , startColumn: 10
+                      , tokenTypeIdx: 9
+                      , tokenType: {
+                          name: 'lparen'
+                        , PATTERN: '('
                         }
-                      }, {
-                        name: 'arg'
+                      }
+                    ]
+                  , arguments: [
+                      {
+                        name: 'arguments'
                       , children: {
-                          number: [{
-                            image: '2'
-                          }]
+                          arg: [
+                            {
+                              name: 'arg'
+                            , children: {
+                                identifier: [
+                                  {
+                                    image: '1'
+                                  , startOffset: 10
+                                  , startLine: 1
+                                  , startColumn: 11
+                                  , tokenTypeIdx: 8
+                                  , tokenType: {
+                                      name: 'identifier'
+                                    , PATTERN: RegExp
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          , {
+                              name: 'arg'
+                            , children: {
+                                identifier: [
+                                  {
+                                    image: '2'
+                                  , startOffset: 14
+                                  , startLine: 1
+                                  , startColumn: 15
+                                  , tokenTypeIdx: 8
+                                  , tokenType: {
+                                      name: 'identifier'
+                                    , PATTERN: RegExp
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        , comma: [
+                            {
+                              image: ','
+                            , startOffset: 12
+                            , startLine: 1
+                            , startColumn: 13
+                            , tokenTypeIdx: 4
+                            , tokenType: {
+                                name: 'comma'
+                              , PATTERN: ','
+                              }
+                            }
+                          ]
                         }
-                      }]
-                    }
-                  }]
+                      }
+                    ]
+                  , rparen: [
+                      {
+                        image: ')'
+                      , startOffset: 15
+                      , startLine: 1
+                      , startColumn: 16
+                      , tokenTypeIdx: 10
+                      , tokenType: {
+                          name: 'rparen'
+                        , PATTERN: ')'
+                        }
+                      }
+                    ]
+                  }
                 }
-              }]
+              ]
             }
           }]
         }
@@ -298,93 +407,234 @@ test('last parser', async (t) => {
           fn: [{
             name: 'fn'
           , children: {
-              bang: [{
-                image: '!'
-              , tokenType: {
-                  name: 'bang'
-                , PATTERN: /!/
+              bang: [
+                {
+                  image: '!'
+                , startOffset: 0
+                , startLine: 1
+                , startColumn: 1
+                , tokenTypeIdx: 3
+                , tokenType: {
+                    name: 'bang'
+                  , PATTERN: RegExp
+                  }
                 }
-              }]
-            , identifier: [{
-                image: 'foo'
-              , tokenType: {
-                  name: 'identifier'
-                , PATTERN: RegExp
+              ]
+            , identifier: [
+                {
+                  image: 'foo'
+                , startOffset: 1
+                , startLine: 1
+                , startColumn: 2
+                , tokenTypeIdx: 8
+                , tokenType: {
+                    name: 'identifier'
+                  , PATTERN: RegExp
+                  }
                 }
-              }]
-            , shortarguments: null
-            , callarguments: [{
-                name: 'callarguments'
-              , children: {
-                  arguments: [{
-                    name: 'arguments'
-                  , children: {
-                      arg: [{
-                        name: 'arg'
-                      , children: {
-                          number: [{
-                            image: '1'
-                          }]
+              ]
+            , callarguments: [
+                {
+                  name: 'callarguments'
+                , children: {
+                    lparen: [
+                      {
+                        image: '('
+                      , startOffset: 4
+                      , startLine: 1
+                      , startColumn: 5
+                      , tokenTypeIdx: 9
+                      , tokenType: {
+                          name: 'lparen'
+                        , PATTERN: '('
                         }
-                      }, {
-                        name: 'arg'
+                      }
+                    ]
+                  , arguments: [
+                      {
+                        name: 'arguments'
                       , children: {
-                          fn: [{
-                            name: 'fn'
-                          , children: {
-                              bang: [{
-                                image: '!'
-                              , tokenType: {
-                                  name: 'bang'
-                                , PATTERN: /!/
-                                }
-                              }]
-                            , identifier: [{
-                                image: 'bar'
-                              , tokenType: {
-                                  name: 'identifier'
-                                }
-                              }]
-                            , callarguments: [{
-                                name: 'callarguments'
-                              , children: {
-                                  arguments: [{
-                                    name: 'arguments'
-                                  , children: {
-                                      arg: [{
-                                        name: 'arg'
-                                      , children: {
-                                          number: [{
-                                            image: '1'
-                                          , tokenType: {
-                                              name: 'number'
-                                            }
-                                          }]
-                                        }
-                                      }, {
-                                        name: 'arg'
-                                      , children: {
-                                          number: [{
-                                            image: '2'
-                                          , tokenType: {
-                                              name: 'number'
-                                            , PATTERN: RegExp
-                                            }
-                                          }]
-                                        }
-                                      }]
+                          arg: [
+                            {
+                              name: 'arg'
+                            , children: {
+                                identifier: [
+                                  {
+                                    image: '1'
+                                  , startOffset: 5
+                                  , startLine: 1
+                                  , startColumn: 6
+                                  , tokenTypeIdx: 8
+                                  , tokenType: {
+                                      name: 'identifier'
+                                    , PATTERN: RegExp
                                     }
-                                  }]
-                                }
-                              }]
+                                  }
+                                ]
+                              }
                             }
-                          }]
+                          , {
+                              name: 'arg'
+                            , children: {
+                                fn: [
+                                  {
+                                    name: 'fn'
+                                  , children: {
+                                      bang: [
+                                        {
+                                          image: '!'
+                                        , startOffset: 7
+                                        , startLine: 1
+                                        , startColumn: 8
+                                        , tokenTypeIdx: 3
+                                        , tokenType: {
+                                            name: 'bang'
+                                          , PATTERN: RegExp
+                                          }
+                                        }
+                                      ]
+                                    , identifier: [
+                                        {
+                                          image: 'bar'
+                                        , startOffset: 8
+                                        , startLine: 1
+                                        , startColumn: 9
+                                        , tokenTypeIdx: 8
+                                        , tokenType: {
+                                            name: 'identifier'
+                                          , PATTERN: RegExp
+                                          }
+                                        }
+                                      ]
+                                    , callarguments: [
+                                        {
+                                          name: 'callarguments'
+                                        , children: {
+                                            lparen: [
+                                              {
+                                                image: '('
+                                              , startOffset: 11
+                                              , startLine: 1
+                                              , startColumn: 12
+                                              , tokenTypeIdx: 9
+                                              , tokenType: {
+                                                  name: 'lparen'
+                                                , PATTERN: '('
+                                                }
+                                              }
+                                            ]
+                                          , arguments: [
+                                              {
+                                                name: 'arguments'
+                                              , children: {
+                                                  arg: [
+                                                    {
+                                                      name: 'arg'
+                                                    , children: {
+                                                        identifier: [
+                                                          {
+                                                            image: '1'
+                                                          , startOffset: 12
+                                                          , startLine: 1
+                                                          , startColumn: 13
+                                                          , tokenTypeIdx: 8
+                                                          , tokenType: {
+                                                              name: 'identifier'
+                                                            , PATTERN: RegExp
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  , {
+                                                      name: 'arg'
+                                                    , children: {
+                                                        identifier: [
+                                                          {
+                                                            image: '2'
+                                                          , startOffset: 15
+                                                          , startLine: 1
+                                                          , startColumn: 16
+                                                          , tokenTypeIdx: 8
+                                                          , tokenType: {
+                                                              name: 'identifier'
+                                                            , PATTERN: RegExp
+                                                            }
+                                                          }
+                                                        ]
+                                                      }
+                                                    }
+                                                  ]
+                                                , comma: [
+                                                    {
+                                                      image: ','
+                                                    , startOffset: 13
+                                                    , startLine: 1
+                                                    , startColumn: 14
+                                                    , tokenTypeIdx: 4
+                                                    , tokenType: {
+                                                        name: 'comma'
+                                                      , PATTERN: ','
+                                                      }
+                                                    }
+                                                  ]
+                                                }
+                                              }
+                                            ]
+                                          , rparen: [
+                                              {
+                                                image: ')'
+                                              , startOffset: 16
+                                              , startLine: 1
+                                              , startColumn: 17
+                                              , tokenTypeIdx: 10
+                                              , tokenType: {
+                                                  name: 'rparen'
+                                                , PATTERN: ')'
+                                                }
+                                              }
+                                            ]
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        , comma: [
+                            {
+                              image: ','
+                            , startOffset: 6
+                            , startLine: 1
+                            , startColumn: 7
+                            , tokenTypeIdx: 4
+                            , tokenType: {
+                                name: 'comma'
+                              , PATTERN: ','
+                              }
+                            }
+                          ]
                         }
-                      }]
-                    }
-                  }]
+                      }
+                    ]
+                  , rparen: [
+                      {
+                        image: ')'
+                      , startOffset: 17
+                      , startLine: 1
+                      , startColumn: 18
+                      , tokenTypeIdx: 10
+                      , tokenType: {
+                          name: 'rparen'
+                        , PATTERN: ')'
+                        }
+                      }
+                    ]
+                  }
                 }
-              }]
+              ]
             }
           }]
         }
@@ -414,7 +664,6 @@ test('last parser', async (t) => {
       t.match(error.token, {
         image: '!'
       }, 'expected token value')
-
     })
   })
 }).catch(threw)

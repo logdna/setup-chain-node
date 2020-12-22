@@ -23,13 +23,18 @@ test('chain', async (t) => {
     t.strictEqual(chain.lookup(), null, 'no input returns null')
     t.strictEqual(chain.lookup(null), null, 'no input returns null')
     t.strictEqual(chain.lookup('a'), 'a', 'returns literal values')
+    t.strictEqual(chain.lookup('*'), '*', 'returns literal values')
+    t.strictEqual(chain.lookup(
+      '2020-11-21T19:16:27.705Z')
+    , '2020-11-21T19:16:27.705Z'
+    , 'returns literal values')
     t.strictEqual(chain.lookup(true), true, 'returns literal values')
     t.strictEqual(chain.lookup(1), 1, 'returns literal values')
     t.strictEqual(chain.lookup('#a'), 1, 'can lookup single values')
     t.strictEqual(chain.lookup('#x'), 1000, 'initial values accessable')
     t.throws(() => {
       chain.lookup('#')
-    }, /expecting: one of these possible token sequences:/i)
+    }, /expecting: expecting at least one iteration/i)
 
     {
       const val = chain.lookup('!random')
@@ -155,11 +160,6 @@ test('chain', async (t) => {
       , foo: 'bar'
       , set: undefined
       }, 'can resolve array values')
-    }
-
-    {
-      const chain = new Chain().set('foo', 'foo.bar')
-      t.rejects(chain.execute(), /setup chain error in set/gi)
     }
   })
 
