@@ -22,51 +22,6 @@ function parse(str) {
 }
 
 test('last visitor', async (t) => {
-  t.test('identifier', async (t) => {
-    t.deepEqual(parse('foo'), {
-      type: 'root'
-    , children: [{
-        type: 'literal'
-      , value: 'foo'
-      , position: {
-          start: {column: 1, offset: 0, line: 1}
-        , end: {column: 4, offset: 3, line: 1}
-        }
-      }]
-    })
-  })
-
-  t.test('object path', async (t) => {
-    t.throws(() => {
-      parse('foo.bar')
-    }, /expecting: one of these possible token sequences/ig)
-    t.deepEqual(parse('"foo.bar"'), {
-      type: 'root'
-    , children: [{
-        type: 'literal'
-      , value: 'foo.bar'
-      , position: {
-          start: {column: 1, offset: 0, line: 1}
-        , end: {column: 10, offset: 9, line: 1}
-        }
-      }]
-    })
-  })
-
-  t.test('string value', async (t) => {
-    t.deepEqual(parse('"foo"'), {
-      type: 'root'
-    , children: [{
-        type: 'literal'
-      , value: 'foo'
-      , position: {
-          start: {column: 1, offset: 0, line: 1}
-        , end: {column: 6, offset: 5, line: 1}
-        }
-      }]
-    })
-  })
-
   t.test('lookup values', async (t) => {
     t.test('top level lookup', async (t) => {
       t.deepEqual(parse('#foo'), {
@@ -186,6 +141,5 @@ test('last visitor', async (t) => {
         }]
       })
     })
-
   })
 }).catch(threw)

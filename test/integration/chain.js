@@ -161,26 +161,41 @@ test('Setup chain', async (t) => {
         super(state)
       }
 
+      $test(...args) {
+        return `test-${args.join('-')}`
+      }
+
       $reflect(...args) {
         return args
       }
     }
 
+    const chain = new FunctionChain()
+    chain.set('foo', {bar: 'baz'})
+
     const testCases = [
       {input: '!reflect:one,two,three', expected: ['one', 'two', 'three']}
     , {input: '!reflect:"one,two,three"', expected: ['one,two,three']}
-    , {input: '!reflect:one,true,three', expected: ['one', true, 'three']}
+    , {input: '!reflect:#foo', expected: [{bar: 'baz'}]}
     , {input: "!reflect:'one,two',three", expected: ['one,two', 'three']}
     , {input: '!reflect:four  ,five, false', expected: ['four', 'five', false]}
-    , {input: '!reflect:"one:two",three', expected: ['one:two', 'three']}
+    , {input: '!reflect:"one:two",#foo.bar', expected: ['one:two', 'baz']}
+    , {input: '!reflect:"one:two",!test:three', expected: ['one:two', 'test-three']}
     , {input: '!reflect:"one:two,three"', expected: ['one:two,three']}
+    , {
+        input: '!reflect("2020-11-21T19:16:27.705Z",true,3)'
+      , expected: ['2020-11-21T19:16:27.705Z', true, 3]
+      }
+    , {
+        input: '!reflect:"one:two",!test(three,four)'
+      , expected: ['one:two', 'test-three-four']
+      }
     , {
         input: '!reflect:"one,two",three,"four,five",six'
       , expected: ['one,two', 'three', 'four,five', 'six']
       }
     ]
 
-    const chain = new FunctionChain()
     await chain.execute()
 
     for (const testCase of testCases) {
