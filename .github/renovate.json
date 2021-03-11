@@ -1,4 +1,3 @@
 {
-  "baseBranches": ["rel-432-renovate-testing"],
   "$schema": "https://docs.renovatebot.com/renovate-schema.json"
 }
