@@ -1,56 +1,84 @@
 {
-  "name": "@answerbook/logdna-test-setup-chain",
+  "name": "@logdna/setup-chain",
   "version": "0.0.0",
-  "description": "Base class for implement seed and resource data for test suites",
+  "description": "Base class for implementing seed and resource data for test suites",
   "main": "index.js",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "access": "public"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "extends": "semantic-release-config-logdna"
   },
   "scripts": {
+    "generate": "scripts/generate.js",
     "lint": "eslint .",
-    "commitlint": "commitlint-logdna --from=origin/master",
-    "pretest": "npm run lint && npm run commitlint",
-    "test": "tap; cat output.tap | ./node_modules/.bin/tap-mocha-reporter xunit > coverage/test.xml",
-    "tap": "tap",
-    "generate": "scripts/generate.js"
+    "pretest": "npm run lint",
+    "release": "semantic-release",
+    "release:dry": "semantic-release --dry-run --no-ci --branches=${BRANCH_NAME:-main}",
+    "test": "tools/test-ci.sh",
+    "tap": "tap"
   },
+  "files": [
+    "lib/",
+    "index.js",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/answerbook/logdna-test-setup-chain"
+    "url": "git+ssh://git@github.com/logdna/setup-chain-node"
   },
   "keywords": [
-    "testing"
+    "testing",
+    "chainable",
+    "async",
+    "builder",
+    "tap",
+    "ci",
+    "customizable"
   ],
   "author": "Eric Satterwhite <eric.satterwhite@logdna.com>",
   "license": "SEE LICENSE IN LICENSE",
   "bugs": {
-    "url": "https://github.com/answerbook/logdna-test-setup-chain/issues"
+    "url": "https://github.com/logdna/setup-chain-node/issues"
   },
   "eslintConfig": {
-    "extends": "logdna",
     "root": true,
     "ignorePatterns": [
       "node_modules/",
       "coverage/"
-    ]
+    ],
+    "extends": [
+      "logdna"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2020
+    },
+    "plugins": []
   },
-  "homepage": "https://github.com/answerbook/logdna-test-setup-chain#readme",
+  "homepage": "https://github.com/logdna/setup-chain-node",
   "devDependencies": {
-    "@answerbook/commitlint-config-logdna": "^1.5.0",
     "casual": "^1.6.2",
-    "eslint": "^7.4.0",
-    "eslint-config-logdna": "^4.0.0",
+    "eslint": "^7.25.0",
+    "eslint-config-logdna": "^5.0.0",
     "moment": "^2.27.0",
-    "tap": "^14.10.7"
+    "semantic-release": "^17.4.2",
+    "semantic-release-config-logdna": "^1.3.0",
+    "tap": "^15.0.6",
+    "tap-parser": "^10.1.0",
+    "tap-xunit": "^2.4.1"
   },
   "tap": {
     "100": true,
     "ts": false,
-    "esm": false,
     "jsx": false,
     "browser": false,
-    "reporter": "classic",
-    "output-file": "output.tap",
+    "reporter": "tap",
+    "output-file": ".tap",
     "check-coverage": true,
     "files": [
       "test/unit/",
@@ -60,15 +88,18 @@
       "text",
       "text-summary",
       "json",
+      "json-summary",
       "html"
     ],
     "nyc-arg": [
       "--exclude=test/",
-      "--exclude=coverage/"
+      "--exclude=coverage/",
+      "--exclude=scripts/",
+      "--all"
     ]
   },
   "dependencies": {
-    "@answerbook/stdlib": "^1.2.0",
+    "@logdna/stdlib": "^1.0.1",
     "chevrotain": "^7.0.3"
   }
 }

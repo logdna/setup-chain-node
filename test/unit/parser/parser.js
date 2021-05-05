@@ -15,7 +15,7 @@ test('last parser', async (t) => {
     parser.input = tokens
     parser.last()
 
-    t.strictEqual(parser._errors.length, 1, 'number of parser errors')
+    t.equal(parser._errors.length, 1, 'number of parser errors')
 
     const [error] = parser._errors
     t.match(error, {
@@ -646,7 +646,7 @@ test('last parser', async (t) => {
       parser.input = tokens
       parser.last()
 
-      t.strictEqual(parser._errors.length, 1, 'number of parser errors')
+      t.equal(parser._errors.length, 1, 'number of parser errors')
       const [error] = parser._errors
 
       t.match(

@@ -20,18 +20,18 @@ test('chain', async (t) => {
     chain.set('x', 1000)
     await chain.execute()
 
-    t.strictEqual(chain.lookup(), null, 'no input returns null')
-    t.strictEqual(chain.lookup(null), null, 'no input returns null')
-    t.strictEqual(chain.lookup('a'), 'a', 'returns literal values')
-    t.strictEqual(chain.lookup('*'), '*', 'returns literal values')
-    t.strictEqual(chain.lookup(
+    t.equal(chain.lookup(), null, 'no input returns null')
+    t.equal(chain.lookup(null), null, 'no input returns null')
+    t.equal(chain.lookup('a'), 'a', 'returns literal values')
+    t.equal(chain.lookup('*'), '*', 'returns literal values')
+    t.equal(chain.lookup(
       '2020-11-21T19:16:27.705Z')
     , '2020-11-21T19:16:27.705Z'
     , 'returns literal values')
-    t.strictEqual(chain.lookup(true), true, 'returns literal values')
-    t.strictEqual(chain.lookup(1), 1, 'returns literal values')
-    t.strictEqual(chain.lookup('#a'), 1, 'can lookup single values')
-    t.strictEqual(chain.lookup('#x'), 1000, 'initial values accessable')
+    t.equal(chain.lookup(true), true, 'returns literal values')
+    t.equal(chain.lookup(1), 1, 'returns literal values')
+    t.equal(chain.lookup('#a'), 1, 'can lookup single values')
+    t.equal(chain.lookup('#x'), 1000, 'initial values accessable')
     t.throws(() => {
       chain.lookup('#')
     }, /expecting: expecting at least one iteration/i)
@@ -39,7 +39,7 @@ test('chain', async (t) => {
     {
       const val = chain.lookup('!random')
       t.type(val, 'string')
-      t.notStrictEqual(val, '!random', 'function call executed')
+      t.not(val, '!random', 'function call executed')
     }
 
     {
@@ -53,43 +53,43 @@ test('chain', async (t) => {
     {
       const expected = {key: 1, nested: {key: 3}}
       const lookup = {key: '#a', nested: {key: '#b.d.e'}}
-      t.deepEqual(chain.lookup(lookup), expected)
+      t.same(chain.lookup(lookup), expected)
     }
 
     {
       const expected = {key: 11, array: [1, 2, 3]}
       const lookup = {key: '#g', array: ['#a', '#b.c', '#b.d.e']}
-      t.deepEqual(chain.lookup(lookup), expected, 'can look through an array')
+      t.same(chain.lookup(lookup), expected, 'can look through an array')
     }
 
     {
       const expected = {key: 11, array: [{a: 2, b: 10}]}
       const lookup = {key: '#g', array: [{a: '#b.c', b: '#f'}]}
-      t.deepEqual(chain.lookup(lookup), expected, 'can look through an array')
+      t.same(chain.lookup(lookup), expected, 'can look through an array')
     }
 
     {
       const expected = [null]
       const lookup = ['!notfound']
-      t.deepEqual(chain.lookup(lookup), expected, 'invalid key lookup returns null')
+      t.same(chain.lookup(lookup), expected, 'invalid key lookup returns null')
     }
 
     {
       const expected = [null]
       const lookup = ['#fake']
-      t.deepEqual(chain.lookup(lookup), expected, 'invalid key lookup returns null')
+      t.same(chain.lookup(lookup), expected, 'invalid key lookup returns null')
     }
 
     {
       const expected = [11, 2]
       const lookup = ['#g', '#b.c']
-      t.deepEqual(chain.lookup(lookup), expected, 'can populate an array')
+      t.same(chain.lookup(lookup), expected, 'can populate an array')
     }
 
     {
       const expected = {key: 11, values: [2, 10, {foo: 3}]}
       const lookup = {key: '#g', values: ['#b.c', '#f', {foo: '#b.d.e'}]}
-      t.deepEqual(chain.lookup(lookup), expected, 'can populate nested object/array')
+      t.same(chain.lookup(lookup), expected, 'can populate nested object/array')
     }
 
     {
@@ -97,7 +97,7 @@ test('chain', async (t) => {
       const lookup = {key: '#g', rand: '!random'}
       const out = chain.lookup(lookup)
       t.match(out, expected, 'can eval function in object')
-      t.notStrictEqual(out.rand, lookup.rand, 'random value generated')
+      t.not(out.rand, lookup.rand, 'random value generated')
     }
 
     {
@@ -106,7 +106,7 @@ test('chain', async (t) => {
         tpl: '!template:"{{#a}}, - [{{#g}}] - {{#missing}} - {{#b.c}}{{noprefix}}"'
       }
       const out = chain.lookup(lookup)
-      t.deepEqual(out, expected, 'templated string replaced with values from the chain')
+      t.same(out, expected, 'templated string replaced with values from the chain')
     }
 
     {
@@ -122,7 +122,7 @@ test('chain', async (t) => {
   t.test('#set', async (t) => {
     {
       const state = await new Chain().set('foo.bar', 'hello world').execute()
-      t.deepEqual(state, {
+      t.same(state, {
         foo: {
           bar: 'hello world'
         }
@@ -136,7 +136,7 @@ test('chain', async (t) => {
         .set('foo.bar', '#one')
         .execute()
 
-      t.deepEqual(state, {
+      t.same(state, {
         one: 2
       , foo: {
           bar: 2
@@ -173,11 +173,11 @@ test('chain', async (t) => {
     }, 'can set nested literal values')
 
     chain.set('foo.bar', 'goodbye').reset()
-    t.deepEqual(chain.tasks, [], 'internal tasks reset')
+    t.same(chain.tasks, [], 'internal tasks reset')
 
     const reset = await chain.execute()
     t.match(state, reset, 'can set nested literal values')
-    t.deepEqual(chain.state, {
+    t.same(chain.state, {
       foo: {
         bar: 'hello world'
       }

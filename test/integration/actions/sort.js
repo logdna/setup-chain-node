@@ -19,27 +19,27 @@ function comparator(a, b) {
 test('SetupChain.sort() as a builtin action', async (t) => {
   const chain = new ActionsChain()
 
-  t.test('chain.sort is a function', async (tt) => {
-    tt.type(chain.sort, 'function', 'sort is a function')
+  t.test('chain.sort is a function', async (t) => {
+    t.type(chain.sort, 'function', 'sort is a function')
   })
 
-  t.test('Success; Call sort for a given collection', async (tt) => {
+  t.test('Success; Call sort for a given collection', async (t) => {
     const coll = ['biz', 'zarf', 'biz', 'clunk', 'goof', 'app']
     const state = await chain
       .sort(coll, comparator, 'coll_sorted')
       .execute()
 
     const expected = ['app', 'biz', 'biz', 'clunk', 'goof', 'zarf']
-    tt.deepEqual(state.coll_sorted, expected, 'Expected result in state')
-    tt.deepEqual(chain.state.coll_sorted, expected, 'Expected result in chain.state')
-    tt.deepEqual(
+    t.same(state.coll_sorted, expected, 'Expected result in state')
+    t.same(chain.state.coll_sorted, expected, 'Expected result in chain.state')
+    t.same(
       coll
     , ['biz', 'zarf', 'biz', 'clunk', 'goof', 'app']
     , 'Original array is NOT mutated due to .lookup'
     )
   })
 
-  t.test('Success; Call sort for lookup value', async (tt) => {
+  t.test('Success; Call sort for lookup value', async (t) => {
     const coll = ['biz', 'zarf', 'biz', 'clunk', 'goof', 'app']
     const state = await chain
       .set('my_collection', coll)
@@ -47,40 +47,40 @@ test('SetupChain.sort() as a builtin action', async (t) => {
       .execute()
 
     const expected = ['app', 'biz', 'biz', 'clunk', 'goof', 'zarf']
-    tt.deepEqual(state.lookup_sorted, expected, 'Expected result in state')
-    tt.deepEqual(chain.state.lookup_sorted, expected, 'Result in chain.state')
-    tt.deepEqual(
+    t.same(state.lookup_sorted, expected, 'Expected result in state')
+    t.same(chain.state.lookup_sorted, expected, 'Result in chain.state')
+    t.same(
       coll
     , ['biz', 'zarf', 'biz', 'clunk', 'goof', 'app']
     , 'Original array is NOT mutated due to .lookup'
     )
   })
 
-  t.test('Error: collection is not an array', async (tt) => {
+  t.test('Error: collection is not an array', async (t) => {
     const msg = new RegExp(
       'first param should be an array.  Supports dynamic lookups'
     )
 
-    tt.rejects(chain.sort().execute(), {
+    t.rejects(chain.sort().execute(), {
       err: msg
     }, 'No parameters')
 
-    tt.rejects(chain.sort(null).execute(), {
+    t.rejects(chain.sort(null).execute(), {
       err: msg
     }, 'collection is null')
 
-    tt.rejects(chain.sort({}).execute(), {
+    t.rejects(chain.sort({}).execute(), {
       err: msg
     }, 'collection is an object')
 
-    tt.rejects(chain.sort('ten').execute(), {
+    t.rejects(chain.sort('ten').execute(), {
       err: msg
     }, 'collection is a string')
   })
 
-  t.test('Error: comparator is not a function', async (tt) => {
+  t.test('Error: comparator is not a function', async (t) => {
     const msg = new RegExp('second param should be a sort comparator function')
-    tt.rejects(chain.sort([], 'NOPE').execute(), {
+    t.rejects(chain.sort([], 'NOPE').execute(), {
       err: msg
     }, 'Bad sort function')
   })

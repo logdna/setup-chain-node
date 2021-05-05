@@ -67,7 +67,7 @@ test('typeOf', (t) => {
     }
   ]
   for (const current of cases) {
-    t.strictEqual(
+    t.equal(
       typeOf(current.value)
     , current.expected
     , current.message || `typeOf(${current.value}) == ${current.expected}`
