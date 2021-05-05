@@ -6,7 +6,7 @@ const Chain = require('../../lib/chain.js')
 const actions = require('../fixtures/actions/index.js')
 
 test('Setup chain', async (t) => {
-  t.test('base chain', async (tt) => {
+  t.test('base chain', async (t) => {
     const start = new Date()
     const state = await new Chain({
       a: 'b'
@@ -18,8 +18,8 @@ test('Setup chain', async (t) => {
       .execute()
 
     const end = new Date()
-    tt.ok((end - start) >= 10, 'sleep timeout elapsed')
-    tt.deepEqual(state, {
+    t.ok((end - start) >= 10, 'sleep timeout elapsed')
+    t.same(state, {
       a: 'b'
     , c: {
         d: 'e'
@@ -28,7 +28,7 @@ test('Setup chain', async (t) => {
     }, 'initial state passed through constructor')
   })
 
-  t.test('extended chain with passed-in actions', async (tt) => {
+  t.test('extended chain with passed-in actions', async (t) => {
     class ExtendedChain extends Chain {
       constructor(state) {
         super(state, actions)
@@ -59,7 +59,7 @@ test('Setup chain', async (t) => {
         .sleep()
         .execute()
 
-      tt.match(state, {
+      t.match(state, {
         name: 'foobar'
       , name_2: 'bill'
       , name_3: 'fred'
@@ -72,17 +72,17 @@ test('Setup chain', async (t) => {
         ]}, 'expected output')
     }
 
-    tt.rejects(
+    t.rejects(
       new ExtendedChain().error().execute()
     , /setup chain error in error/i
     )
-    tt.rejects(
+    t.rejects(
       new ExtendedChain().fake().execute()
     , /tasks must be an array of objects/i
     )
   })
 
-  t.test('Custom action signatures are not auto-exposed', async (tt) => {
+  t.test('Custom action signatures are not auto-exposed', async (t) => {
     async function printNames(first, last) {
       return `Hello, ${first} ${last}`
     }
@@ -102,13 +102,13 @@ test('Setup chain', async (t) => {
         .printNames('Mr.', 'Wonderful', 'names')
         .execute()
 
-      tt.match(state, {
+      t.match(state, {
         names: 'Hello, Mr. Wonderful'
       }, 'expected output')
     }
   })
 
-  t.test('extended chain w/ lookup functions', async (tt) => {
+  t.test('extended chain w/ lookup functions', async (t) => {
     class MomentChain extends Chain {
       constructor(state) {
         super(state)
@@ -133,15 +133,15 @@ test('Setup chain', async (t) => {
     const chain = new MomentChain()
     {
       const value = chain.lookup('!dateadd:!now,1,d')
-      tt.ok(value instanceof moment, 'is moment value')
+      t.ok(value instanceof moment, 'is moment value')
     }
     {
       const value = chain.lookup('!dateadd:!now,1,d,x')
-      tt.match(value, /\d+/, 'formatted number value')
+      t.match(value, /\d+/, 'formated number value')
     }
   })
 
-  t.test('extended chain created with an existing state', async (tt) => {
+  t.test('extended chain created with an existing state', async (t) => {
     class WithStateChain extends Chain {
       constructor(state) {
         super(state)
@@ -151,11 +151,11 @@ test('Setup chain', async (t) => {
 
     const chain = new WithStateChain(state_param)
     const hello = chain.lookup('#hello')
-    tt.strictEqual(hello, 'there', 'State input was parsed and saved')
-    tt.deepEqual(chain.state.hello, 'there', 'Saved in `state` instance variable')
+    t.equal(hello, 'there', 'State input was parsed and saved')
+    t.same(chain.state.hello, 'there', 'Saved in `state` instance variable')
   })
 
-  t.test('chain function argument handling', async (tt) => {
+  t.test('chain function argument handling', async (t) => {
     class FunctionChain extends Chain {
       constructor(state) {
         super(state)
@@ -199,7 +199,7 @@ test('Setup chain', async (t) => {
     await chain.execute()
 
     for (const testCase of testCases) {
-      tt.deepEqual(
+      t.same(
         chain.lookup(testCase.input)
       , testCase.expected
       , `"${testCase.input}" arguments correct`
@@ -207,11 +207,11 @@ test('Setup chain', async (t) => {
     }
   })
 
-  t.test('Default SetupChain (no actions, state); Only built-ins', async (tt) => {
+  t.test('Default SetupChain (no actions, state); Only built-ins', async (t) => {
     const chain = new Chain(null, null)
-    tt.deepEqual(chain.state, {}, 'Empty state')
-    tt.strictEqual(Object.keys(chain.actions).length, 5, 'Built-in action count')
-    tt.match(chain.actions, {
+    t.same(chain.state, {}, 'Empty state')
+    t.equal(Object.keys(chain.actions).length, 5, 'Built-in action count')
+    t.match(chain.actions, {
       map: Function
     , repeat: Function
     , sleep: Function
@@ -219,7 +219,7 @@ test('Setup chain', async (t) => {
     , set: Function
     }, 'Built-in action names')
 
-    tt.match(chain, {
+    t.match(chain, {
       $random: Function
     , $template: Function
     }, 'Built-in function names')

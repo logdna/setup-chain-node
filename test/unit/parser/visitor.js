@@ -24,7 +24,7 @@ function parse(str) {
 test('last visitor', async (t) => {
   t.test('lookup values', async (t) => {
     t.test('top level lookup', async (t) => {
-      t.deepEqual(parse('#foo'), {
+      t.same(parse('#foo'), {
         type: 'root'
       , children: [{
           type: 'lookup'
@@ -38,7 +38,7 @@ test('last visitor', async (t) => {
     })
 
     t.test('nested lookup value', async (t) => {
-      t.deepEqual(parse('#foo.baz'), {
+      t.same(parse('#foo.baz'), {
         type: 'root'
       , children: [{
           type: 'lookup'
@@ -54,7 +54,7 @@ test('last visitor', async (t) => {
 
   t.test('function call', async (t) => {
     t.test('no arguments', async (t) => {
-      t.deepEqual(parse('!whizbang'), {
+      t.same(parse('!whizbang'), {
         type: 'root'
       , children: [{
           type: 'function'

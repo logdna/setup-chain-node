@@ -1,7 +1,11 @@
 library 'magic-butler-catalogue'
 
-def PROJECT_NAME = "logdna-test-setup-chain"
-def repo = "answerbook/${PROJECT_NAME}"
+def PROJECT_NAME = 'setup-chain'
+def CURRENT_BRANCH = [env.CHANGE_BRANCH, env.BRANCH_NAME]?.find{branch -> branch != null}
+def DEFAULT_BRANCH = 'main'
+def TRIGGER_PATTERN = ".*@logdnabot.*"
+def DRY_RUN = CURRENT_BRANCH != DEFAULT_BRANCH
+def CHANGE_ID = env.CHANGE_ID == null ? '' : env.CHANGE_ID
 
 pipeline {
   agent none
@@ -11,15 +15,34 @@ pipeline {
     ansiColor 'xterm'
   }
 
+  triggers {
+    issueCommentTrigger(TRIGGER_PATTERN)
+  }
+
+  environment {
+    GITHUB_TOKEN = credentials('github-api-token')
+    NPM_TOKEN = credentials('npm-publish-token')
+    NPM_CONFIG_CACHE = '.npm'
+    NPM_CONFIG_USERCONFIG = '.npmrc'
+    SPAWN_WRAP_SHIM_ROOT = '.npm'
+  }
+
   stages {
     stage('Test Suite') {
       matrix {
         axes {
           axis {
             name 'NODE_VERSION'
-            values '10', '12', '14'
+            values '12', '14', '16'
           }
         }
+
+        when {
+          not {
+            changelog '\\[skip ci\\]'
+          }
+        }
+
 
         agent {
           docker {
@@ -27,33 +50,22 @@ pipeline {
           }
         }
 
-        environment {
-          GITHUB_PACKAGES_TOKEN = credentials('github-api-token')
-          NPM_CONFIG_CACHE = '.npm'
-          NPM_CONFIG_USERCONFIG = '.npm/rc'
-          SPAWN_WRAP_SHIM_ROOT = '.npm'
-        }
-
         stages {
           stage('Install') {
             steps {
-              sh 'mkdir -p .npm'
-              script {
-                npm.auth token: "${GITHUB_PACKAGES_TOKEN}"
-              }
+              sh "mkdir -p ${NPM_CONFIG_CACHE} coverage"
               sh 'npm install'
             }
           }
 
           stage('Test') {
             steps {
-              sh 'npm run lint -- -f junit -o coverage/lint.xml'
               sh 'npm test'
             }
 
             post {
               always {
-                junit 'coverage/*.xml'
+                junit checksName: 'Test Results', testResults: 'coverage/*.xml'
                 publishHTML target: [
                   allowMissing: false,
                   alwaysLinkToLastBuild: false,
@@ -73,7 +85,7 @@ pipeline {
       when {
         beforeAgent true
         not {
-          branch 'master'
+          branch DEFAULT_BRANCH
         }
       }
 
@@ -85,28 +97,18 @@ pipeline {
       }
 
       environment {
-        GITHUB_PACKAGES_TOKEN = credentials('github-api-token')
-        NPM_CONFIG_CACHE = '.npm'
-        NPM_CONFIG_USERCONFIG = '.npm/rc'
-        SPAWN_WRAP_SHIM_ROOT = '.npm'
+        GIT_BRANCH = "${CURRENT_BRANCH}"
+        BRANCH_NAME = "${CURRENT_BRANCH}"
+        CHANGE_ID = ""
       }
 
       steps {
-        sh 'mkdir -p .npm'
-        versioner(
-          token: "${GITHUB_PACKAGES_TOKEN}"
-        , dry: true
-        , repo: repo
-        )
+        sh 'npm install'
+        sh 'npm run release:dry'
       }
     }
 
-    stage('Release') {
-      when {
-        beforeAgent true
-        branch 'master'
-      }
-
+    stage ('Release') {
       agent {
         docker {
           image "us.gcr.io/logdna-k8s/node:12-ci"
@@ -114,21 +116,18 @@ pipeline {
         }
       }
 
-      environment {
-        GITHUB_PACKAGES_TOKEN = credentials('github-api-token')
-        NPM_CONFIG_CACHE = '.npm'
-        NPM_CONFIG_USERCONFIG = '.npm/rc'
-        SPAWN_WRAP_SHIM_ROOT = '.npm'
+      when {
+        beforeAgent true
+        branch DEFAULT_BRANCH
+        not {
+          changelog '\\[skip ci\\]'
+        }
       }
 
       steps {
-        sh 'mkdir -p .npm'
-        sh "git checkout -b ${GIT_BRANCH} origin/${GIT_BRANCH}"
-        versioner(
-          token: "${GITHUB_PACKAGES_TOKEN}"
-        , dry: false
-        , repo: repo
-        )
+        sh "mkdir -p ${NPM_CONFIG_CACHE}"
+        sh 'npm install'
+        sh 'npm run release'
       }
     }
   }

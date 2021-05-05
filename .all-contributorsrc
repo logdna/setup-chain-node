@@ -1,0 +1,67 @@
+{
+  "projectName": "setup-chain-node",
+  "projectOwner": "logdna",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": true,
+  "commitConvention": "angular",
+  "contributors": [
+    {
+      "login": "darinspivey",
+      "name": "Darin Spivey",
+      "avatar_url": "https://avatars.githubusercontent.com/u/1874788?v=4",
+      "profile": "https://github.com/darinspivey",
+      "contributions": [
+        "code",
+        "doc",
+        "maintenance",
+        "test",
+        "review"
+      ]
+    },
+    {
+      "login": "esatterwhite",
+      "name": "Eric Satterwhite",
+      "avatar_url": "https://avatars.githubusercontent.com/u/148561?v=4",
+      "profile": "http://codedependant.net/",
+      "contributions": [
+        "code",
+        "doc",
+        "maintenance",
+        "test",
+        "review"
+      ]
+    },
+    {
+      "login": "mdeltito",
+      "name": "Mike Del Tito",
+      "avatar_url": "https://avatars.githubusercontent.com/u/69520?v=4",
+      "profile": "https://github.com/mdeltito",
+      "contributions": [
+        "code",
+        "doc",
+        "maintenance",
+        "test",
+        "review"
+      ]
+    },
+    {
+      "login": "evanlucas",
+      "name": "Evan Lucas",
+      "avatar_url": "https://avatars.githubusercontent.com/u/677994?v=4",
+      "profile": "https://evanlucas.com/",
+      "contributions": [
+        "code",
+        "doc",
+        "maintenance",
+        "test",
+        "review"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7
+}

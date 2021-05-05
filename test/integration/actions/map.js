@@ -17,32 +17,32 @@ async function addOne(num) {
 test('SetupChain.map() as a builtin action', async (t) => {
   const chain = new MapChain()
 
-  t.test('map method exists', async (tt) => {
-    tt.type(chain.map, 'function', 'map is a function')
+  t.test('map method exists', async (t) => {
+    t.type(chain.map, 'function', 'map is a function')
   })
 
-  t.test('Success; map a given array with a non-async function', async (tt) => {
+  t.test('Success; map a given array with a non-async function', async (t) => {
     const state = await chain
       .map([1, 2, 3], (num) => { return num === 2 }, 'is_two')
       .execute()
 
     const expected = [false, true, false]
-    tt.deepEqual(state.is_two, expected, 'Expected result in state')
-    tt.deepEqual(chain.state.is_two, expected, 'Expected result in chain.state')
+    t.same(state.is_two, expected, 'Expected result in state')
+    t.same(chain.state.is_two, expected, 'Expected result in chain.state')
   })
 
-  t.test('Success; map #lookup with a non-async function', async (tt) => {
+  t.test('Success; map #lookup with a non-async function', async (t) => {
     const state = await chain
       .set('my_array', [1, 2, 3])
       .map('#my_array', (num) => { return num === 2 }, 'is_two')
       .execute()
 
     const expected = [false, true, false]
-    tt.deepEqual(state.is_two, expected, 'Expected result in state')
-    tt.deepEqual(chain.state.is_two, expected, 'Expected result in chain.state')
+    t.same(state.is_two, expected, 'Expected result in state')
+    t.same(chain.state.is_two, expected, 'Expected result in chain.state')
   })
 
-  t.test('Success; map #lookup with an async arrow function', async (tt) => {
+  t.test('Success; map #lookup with an async arrow function', async (t) => {
     const state = await chain
       .set('my_array', [1, 2, 3])
       .map('#my_array', async (num) => {
@@ -53,11 +53,11 @@ test('SetupChain.map() as a builtin action', async (t) => {
       .execute()
 
     const expected = [2, 3, 4]
-    tt.deepEqual(state.add_one, expected, 'Expected result in state')
-    tt.deepEqual(chain.state.add_one, expected, 'Result in chain.state')
+    t.same(state.add_one, expected, 'Expected result in state')
+    t.same(chain.state.add_one, expected, 'Result in chain.state')
   })
 
-  t.test('Success; map #lookup with an async Function', async (tt) => {
+  t.test('Success; map #lookup with an async Function', async (t) => {
     const state = await chain
       .set('my_array', [1, 2, 3])
       .map('#my_array', async function addOneSecond(num) {
@@ -67,40 +67,40 @@ test('SetupChain.map() as a builtin action', async (t) => {
       .execute()
 
     const expected = [2, 3, 4]
-    tt.deepEqual(state.one_sec_Func, expected, 'Expected result in state')
-    tt.deepEqual(chain.state.one_sec_Func, expected, 'Result in chain.state')
+    t.same(state.one_sec_Func, expected, 'Expected result in state')
+    t.same(chain.state.one_sec_Func, expected, 'Result in chain.state')
   })
 
-  t.test('Error: first parameter is not an array', async (tt) => {
+  t.test('Error: first parameter is not an array', async (t) => {
     const msg = new RegExp(
       'first param should be an array.  Supports dynamic lookups'
     )
 
-    tt.rejects(chain.map().execute(), {
+    t.rejects(chain.map().execute(), {
       err: msg
     }, 'No parameters')
 
-    tt.rejects(chain.map(null).execute(), {
+    t.rejects(chain.map(null).execute(), {
       err: msg
     }, 'collection is null')
 
-    tt.rejects(chain.map({}).execute(), {
+    t.rejects(chain.map({}).execute(), {
       err: msg
     }, 'collection is an object')
 
-    tt.rejects(chain.map('NOPE').execute(), {
+    t.rejects(chain.map('NOPE').execute(), {
       err: msg
     }, 'collection is a string with no #lookup')
   })
 
-  t.test('Error: second parameter is not a function', async (tt) => {
+  t.test('Error: second parameter is not a function', async (t) => {
     const msg = new RegExp('second param should be a function')
 
-    tt.rejects(chain.map([], 'nope').execute(), {
+    t.rejects(chain.map([], 'nope').execute(), {
       err: msg
     }, 'string is not a function')
 
-    tt.rejects(chain.map([], {}).execute(), {
+    t.rejects(chain.map([], {}).execute(), {
       err: msg
     }, 'object is not a function')
   })
