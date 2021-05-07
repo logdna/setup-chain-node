@@ -24,6 +24,16 @@ test('chain', async (t) => {
     t.equal(chain.lookup(null), null, 'no input returns null')
     t.equal(chain.lookup('a'), 'a', 'returns literal values')
     t.equal(chain.lookup('*'), '*', 'returns literal values')
+    t.same( // same will ignore that the `found` has a null prototype, but expected doesn't
+      chain.lookup({one: 1, two: 2})
+    , {one: 1, two: 2}
+    , 'Returns object literals with no substitutions'
+    )
+    t.same(
+      chain.lookup([5, 'something', {one: 1}])
+    , [5, 'something', {one: 1}]
+    , 'Returns array literals with no substitutions, but mixed types'
+    )
     t.equal(chain.lookup(
       '2020-11-21T19:16:27.705Z')
     , '2020-11-21T19:16:27.705Z'
@@ -152,6 +162,7 @@ test('chain', async (t) => {
           one: '!random'
         , two: ['#foo', '#one']
         })
+        .set('message', '!template:"{{#foo}} added first, then in an array [{{#two.0}}]"')
         .execute()
 
       t.match(state, {
@@ -159,6 +170,7 @@ test('chain', async (t) => {
       , two: ['bar', state.one]
       , foo: 'bar'
       , set: undefined
+      , message: 'bar added first, then in an array [bar]'
       }, 'can resolve array values')
     }
   })
