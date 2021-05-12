@@ -1,5 +1,20 @@
 ## Changelog
 
+## [1.0.1](https://github.com/logdna/setup-chain-node/compare/v1.0.0...v1.0.1) (2021-05-12)
+
+
+### Bug Fixes
+
+* **docs**: Improve documentation and add examples [55badb1](https://github.com/logdna/setup-chain-node/commit/55badb18bb2ab60e1b58d621d329c9f8fd33a823) - Darin Spivey
+
+
+### Chores
+
+* **deps**: @logdna/stdlib@1.0.2 [3eefcca](https://github.com/logdna/setup-chain-node/commit/3eefcca930722414d2b8bbe9cc7f22151c79a67b) - Darin Spivey
+* **deps**: chevrotain@9.0.1 [51f81a1](https://github.com/logdna/setup-chain-node/commit/51f81a19617cc8bfe42ce8d234d91991b2d7a1c1) - Darin Spivey
+* **deps**: moment@2.29.1 [db5d01a](https://github.com/logdna/setup-chain-node/commit/db5d01a55e949e331b1f1bb3c994b77e0457d162) - Darin Spivey
+* **deps**: tap@15.0.9 [2734236](https://github.com/logdna/setup-chain-node/commit/273423615b42e01b41037552d577cf46f9c41a91) - Darin Spivey
+
 # 1.0.0 (2021-05-06)
 
 
