@@ -196,5 +196,4 @@ test('chain', async (t) => {
     }, 'internal state reset')
   })
 
-
 }).catch(threw)
