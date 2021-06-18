@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.0.4](https://github.com/logdna/setup-chain-node/compare/v1.0.3...v1.0.4) (2021-06-18)
+
+
+### Chores
+
+* **deps**: update semantic-release requirement from ^17.4.2 to ^17.4.4 [5702c3a](https://github.com/logdna/setup-chain-node/commit/5702c3ad8a968c31b24ea2ad8bef8747c0cc26f0) - Eric Satterwhite
+
 ## [1.0.3](https://github.com/logdna/setup-chain-node/compare/v1.0.2...v1.0.3) (2021-05-25)
 
 
