@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.0.5](https://github.com/logdna/setup-chain-node/compare/v1.0.4...v1.0.5) (2021-06-19)
+
+
+### Chores
+
+* **deps**: update eslint-config-logdna requirement [b4b6bd3](https://github.com/logdna/setup-chain-node/commit/b4b6bd3ea9873867db7d966e30e93b3826023f45) - Darin Spivey
+
 ## [1.0.4](https://github.com/logdna/setup-chain-node/compare/v1.0.3...v1.0.4) (2021-06-18)
 
 
