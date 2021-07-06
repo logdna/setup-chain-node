@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.0.8](https://github.com/logdna/setup-chain-node/compare/v1.0.7...v1.0.8) (2021-07-06)
+
+
+### Chores
+
+* **deps**: update eslint requirement from ^7.26.0 to ^7.30.0 [26dfd53](https://github.com/logdna/setup-chain-node/commit/26dfd535b6e97fc32ac1df57f882bd3457ca6fef) - Mike Del Tito
+
 ## [1.0.7](https://github.com/logdna/setup-chain-node/compare/v1.0.6...v1.0.7) (2021-07-05)
 
 
