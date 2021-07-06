@@ -207,6 +207,27 @@ test('Setup chain', async (t) => {
     }
   })
 
+  t.test('escape control', async (t) => {
+    class EscapeChain extends Chain {
+      constructor(state) {
+        super(state)
+      }
+
+      $test(arg) {
+        return arg
+      }
+    }
+
+    const chain = new EscapeChain({f00: 'wrong'})
+    chain.set('color', '-#f00')
+    chain.set('rand', '-!random')
+    chain.set('complex', '!test("-#foo")')
+    const state = await chain.execute()
+    t.equal(state.color, '#f00')
+    t.equal(state.rand, '!random')
+    t.equal(state.complex, '#foo')
+  })
+
   t.test('Default SetupChain (no actions, state); Only built-ins', async (t) => {
     const chain = new Chain(null, null)
     t.same(chain.state, {}, 'Empty state')
