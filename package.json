@@ -1,6 +1,6 @@
 {
   "name": "@logdna/setup-chain",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Base class for implementing seed and resource data for test suites",
   "main": "index.js",
   "publishConfig": {
