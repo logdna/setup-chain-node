@@ -68,7 +68,7 @@
     "moment": "^2.29.1",
     "semantic-release": "^17.4.4",
     "semantic-release-config-logdna": "^1.3.0",
-    "tap": "^15.0.9",
+    "tap": "^15.1.2",
     "tap-parser": "^10.1.0",
     "tap-xunit": "^2.4.1"
   },
