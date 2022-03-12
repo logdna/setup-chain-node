@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.0.12](https://github.com/logdna/setup-chain-node/compare/v1.0.11...v1.0.12) (2022-03-12)
+
+
+### Chores
+
+* **deps**: bump chevrotain from 9.1.0 to 10.1.2 [8eaaea4](https://github.com/logdna/setup-chain-node/commit/8eaaea4a8db84e938b1976d6ff0d9a65e77ceadc) - Darin Spivey
+
 ## [1.0.11](https://github.com/logdna/setup-chain-node/compare/v1.0.10...v1.0.11) (2021-09-02)
 
 
