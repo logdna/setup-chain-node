@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.0.13](https://github.com/logdna/setup-chain-node/compare/v1.0.12...v1.0.13) (2022-06-05)
+
+
+### Chores
+
+* **deps**: update @logdna/stdlib requirement from ^1.1.3 to ^1.1.5 [e18c89d](https://github.com/logdna/setup-chain-node/commit/e18c89d3ad9f7d00867b11b615db5ad8fbb058fe) - Eric Satterwhite
+
 ## [1.0.12](https://github.com/logdna/setup-chain-node/compare/v1.0.11...v1.0.12) (2022-03-12)
 
 
