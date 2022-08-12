@@ -61,7 +61,7 @@ test('last parser', async (t) => {
               , startOffset: 1
               , startLine: 1
               , startColumn: 2
-              , tokenTypeIdx: 8
+              , tokenTypeIdx: 9
               , tokenType: {
                   name: 'identifier'
                 , PATTERN: RegExp
@@ -72,7 +72,7 @@ test('last parser', async (t) => {
               , startOffset: 8
               , startLine: 1
               , startColumn: 9
-              , tokenTypeIdx: 8
+              , tokenTypeIdx: 9
               , tokenType: {
                   name: 'identifier'
                 , PATTERN: RegExp
@@ -129,7 +129,7 @@ test('last parser', async (t) => {
                 , startOffset: 1
                 , startLine: 1
                 , startColumn: 2
-                , tokenTypeIdx: 8
+                , tokenTypeIdx: 9
                 , tokenType: {
                     name: 'identifier'
                   , PATTERN: RegExp
@@ -171,7 +171,7 @@ test('last parser', async (t) => {
                 , startOffset: 1
                 , startLine: 1
                 , startColumn: 2
-                , tokenTypeIdx: 8
+                , tokenTypeIdx: 9
                 , tokenType: {
                     name: 'identifier'
                   , PATTERN: RegExp
@@ -209,7 +209,7 @@ test('last parser', async (t) => {
                                   , startOffset: 10
                                   , startLine: 1
                                   , startColumn: 11
-                                  , tokenTypeIdx: 8
+                                  , tokenTypeIdx: 9
                                   , tokenType: {
                                       name: 'identifier'
                                     , PATTERN: RegExp
@@ -227,7 +227,7 @@ test('last parser', async (t) => {
                                   , startOffset: 12
                                   , startLine: 1
                                   , startColumn: 13
-                                  , tokenTypeIdx: 11
+                                  , tokenTypeIdx: 12
                                   , tokenType: {
                                       name: 'string'
                                     , PATTERN: RegExp
@@ -292,7 +292,7 @@ test('last parser', async (t) => {
                 , startOffset: 1
                 , startLine: 1
                 , startColumn: 2
-                , tokenTypeIdx: 8
+                , tokenTypeIdx: 9
                 , tokenType: {
                     name: 'identifier'
                   , PATTERN: RegExp
@@ -309,7 +309,7 @@ test('last parser', async (t) => {
                       , startOffset: 9
                       , startLine: 1
                       , startColumn: 10
-                      , tokenTypeIdx: 9
+                      , tokenTypeIdx: 10
                       , tokenType: {
                           name: 'lparen'
                         , PATTERN: '('
@@ -330,7 +330,7 @@ test('last parser', async (t) => {
                                   , startOffset: 10
                                   , startLine: 1
                                   , startColumn: 11
-                                  , tokenTypeIdx: 8
+                                  , tokenTypeIdx: 9
                                   , tokenType: {
                                       name: 'identifier'
                                     , PATTERN: RegExp
@@ -348,7 +348,7 @@ test('last parser', async (t) => {
                                   , startOffset: 14
                                   , startLine: 1
                                   , startColumn: 15
-                                  , tokenTypeIdx: 8
+                                  , tokenTypeIdx: 9
                                   , tokenType: {
                                       name: 'identifier'
                                     , PATTERN: RegExp
@@ -380,7 +380,7 @@ test('last parser', async (t) => {
                       , startOffset: 15
                       , startLine: 1
                       , startColumn: 16
-                      , tokenTypeIdx: 10
+                      , tokenTypeIdx: 11
                       , tokenType: {
                           name: 'rparen'
                         , PATTERN: ')'
@@ -426,7 +426,7 @@ test('last parser', async (t) => {
                 , startOffset: 1
                 , startLine: 1
                 , startColumn: 2
-                , tokenTypeIdx: 8
+                , tokenTypeIdx: 9
                 , tokenType: {
                     name: 'identifier'
                   , PATTERN: RegExp
@@ -443,7 +443,7 @@ test('last parser', async (t) => {
                       , startOffset: 4
                       , startLine: 1
                       , startColumn: 5
-                      , tokenTypeIdx: 9
+                      , tokenTypeIdx: 10
                       , tokenType: {
                           name: 'lparen'
                         , PATTERN: '('
@@ -464,7 +464,7 @@ test('last parser', async (t) => {
                                   , startOffset: 5
                                   , startLine: 1
                                   , startColumn: 6
-                                  , tokenTypeIdx: 8
+                                  , tokenTypeIdx: 9
                                   , tokenType: {
                                       name: 'identifier'
                                     , PATTERN: RegExp
@@ -499,7 +499,7 @@ test('last parser', async (t) => {
                                         , startOffset: 8
                                         , startLine: 1
                                         , startColumn: 9
-                                        , tokenTypeIdx: 8
+                                        , tokenTypeIdx: 9
                                         , tokenType: {
                                             name: 'identifier'
                                           , PATTERN: RegExp
@@ -516,7 +516,7 @@ test('last parser', async (t) => {
                                               , startOffset: 11
                                               , startLine: 1
                                               , startColumn: 12
-                                              , tokenTypeIdx: 9
+                                              , tokenTypeIdx: 10
                                               , tokenType: {
                                                   name: 'lparen'
                                                 , PATTERN: '('
@@ -537,7 +537,7 @@ test('last parser', async (t) => {
                                                           , startOffset: 12
                                                           , startLine: 1
                                                           , startColumn: 13
-                                                          , tokenTypeIdx: 8
+                                                          , tokenTypeIdx: 9
                                                           , tokenType: {
                                                               name: 'identifier'
                                                             , PATTERN: RegExp
@@ -555,7 +555,7 @@ test('last parser', async (t) => {
                                                           , startOffset: 15
                                                           , startLine: 1
                                                           , startColumn: 16
-                                                          , tokenTypeIdx: 8
+                                                          , tokenTypeIdx: 9
                                                           , tokenType: {
                                                               name: 'identifier'
                                                             , PATTERN: RegExp
@@ -587,7 +587,7 @@ test('last parser', async (t) => {
                                               , startOffset: 16
                                               , startLine: 1
                                               , startColumn: 17
-                                              , tokenTypeIdx: 10
+                                              , tokenTypeIdx: 11
                                               , tokenType: {
                                                   name: 'rparen'
                                                 , PATTERN: ')'
@@ -625,7 +625,7 @@ test('last parser', async (t) => {
                       , startOffset: 17
                       , startLine: 1
                       , startColumn: 18
-                      , tokenTypeIdx: 10
+                      , tokenTypeIdx: 11
                       , tokenType: {
                           name: 'rparen'
                         , PATTERN: ')'

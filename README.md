@@ -4,33 +4,35 @@
 <!-- vim-markdown-toc GFM -->
 
 * [Program Flow](#program-flow)
-  * [State](#state)
-  * [Auto-Exposing Action Handlers](#auto-exposing-action-handlers)
-  * [Custom Action Signatures](#custom-action-signatures)
-  * [Required Task Format](#required-task-format)
+    * [State](#state)
+    * [Auto-Exposing Action Handlers](#auto-exposing-action-handlers)
+    * [Custom Action Signatures](#custom-action-signatures)
+    * [Required Task Format](#required-task-format)
 * [API](#api)
-  * [constructor](#new-setupchainstate-actions)
-  * [set(label, value)](#setlabel-value)
-  * [map(collection, iterator, label)](#mapcollection-iterator-label)
-  * [sort(collection, comparator, label)](#sortcollection-comparator-label)
-  * [repeat(times, name, opts, label)](#repeattimes-name-opts-label)
-  * [sleep(opts)](#sleepopts)
-  * [reset()](#reset)
-  * [execute()](#execute)
-  * [lookup(input)](#lookupinput)
+  * [`new SetupChain(state, actions)`](#new-setupchainstate-actions)
+  * [`set(label, value)`](#setlabel-value)
+  * [`map(collection, iterator, label)`](#mapcollection-iterator-label)
+  * [`sort(collection, comparator, label)`](#sortcollection-comparator-label)
+  * [`repeat(times, name, opts, label)`](#repeattimes-name-opts-label)
+  * [`sleep(opts)`](#sleepopts)
+  * [`reset()`](#reset)
+  * [`execute()`](#execute)
+  * [`lookup(input)`](#lookupinput)
 * [Usage](#usage)
   * [Creating a chain](#creating-a-chain)
   * [Actions](#actions)
     * [Adding a New Action](#adding-a-new-action)
-  * [Helper Functions via Lookup](#helper-functions-via-lookup)
-    * [random(bytes)](#randombytes)
-    * [template(input)](#templateinput)
+  * [Helper Functions via `lookup`](#helper-functions-via-lookup)
+    * [Included Helper Functions](#included-helper-functions)
+    * [`random(bytes)`](#randombytes)
+    * [`template(input)`](#templateinput)
     * [Exposing a New Helper Function](#exposing-a-new-helper-function)
 * [LAST](#last)
-  * [Interfaces](#interfaces)
-    * [`Node`](#node)
-    * [`Point`](#point)
-    * [`Position`](#position)
+    * [Interfaces](#interfaces)
+      * [`Node`](#node)
+      * [`Point`](#point)
+      * [`Position`](#position)
+  * [Contributors ✨](#contributors-)
 
 <!-- vim-markdown-toc -->
 
@@ -277,9 +279,7 @@ const chain = new MyChain()
 chain
   .repeat(5, 'hello', {}, 'result')
   .execute()
-  .then((result) => {
-    console.log(result)
-  })
+  .then(console.log)
 
 > {result: ['hi', 'hi', 'hi', 'hi', 'hi']}
 ```
@@ -324,12 +324,12 @@ action that persists a value to the chain state, use [set()](#setstringobject-an
 
   * If the input is a string, and starts with a `#` symbol it is considered to be a lookup path and will
   return the requested value from internal state if found.
-    * Array lookups should use the index value in dot notation, e.g. `#biz.1`
+    * If the first property of a lookup value is `this` data will be retrived from the `input` value
+    * Array lookups can use the index value in dot notation, e.g. `#biz.1`
   * If the input is a string, and starts with a `!` symbol it is considered a function call and will call
     any registered actions from the chain instance and store the result in internal state.
   * If the input is an object, each key in the object will be resolved following the above rules.
   * If the input is an array, each item in the array will be resolved following the above rules.
-
 **Returns:** [String][]|[Object][]|[Array][]
 
 ```javascript
@@ -348,6 +348,12 @@ chain.lookup('#three.one') // 1
 chain.lookup('#four.2') // 'c'
 chain.lookup('#four.3.d') // 'bleck'
 chain.lookup('!template:"{{#one}}{{#two}}{{#three.one}}"{{#four.0}}"') // '121a'
+chain.lookup({
+  one: 1
+, two: '#this.one'
+, three: '#three'
+, array: [{value: 'static', static: '#this.value'}]
+}) // {one: 1, two: 1, three: {one: 1}, array: [{value: 'static', static: 'static'}]}
 
 state.five // 'c'
 ```
@@ -473,6 +479,7 @@ There is a few helper functions that we felt were valuable enough to include in
 the base class.
 
 ### `random(bytes)`
+
 Generates a random HEX string. It accepts an optional single argument that specifies
 the number of random bytes to generate. This can be used when generating
 unique ids or names to be used in database records, for example. Combined with
@@ -490,6 +497,7 @@ chain.lookup('!random:10') // eddbdf576eac2ded313d
 ```
 
 ### `template(input)`
+
 Returns a string with replacement patterns from the chain. Templates are rendered in the
 same sequence as other operations on the chain. Only the data from actions prior to the
 template function will be available for replacement. `template` supports a basic bracket
@@ -652,8 +660,11 @@ Yields:
 ```
 #### `Lookup`
 
+Represents a node responsible for reteiving data
+
 ```idl
-interface Function <: Node {
+interface Lookup <: Node {
+  data: {}
   value: string
 }
 ```
@@ -670,6 +681,40 @@ Yields:
 , children: [{
     type: 'lookup'
   , value: 'foo.bar'
+  }]
+}
+```
+
+#### `Ref`
+
+Node used to provide context for child lookup nodes
+
+```idl
+interface Ref <: Node {
+  children: [Lookup]
+}
+```
+
+```gfm
+ #this.bar
+```
+
+Yields:
+
+```javascript
+{
+  type: 'root'
+, children: [{
+    type: 'ref'
+  , value: 'this'
+  , children: [{
+      type: 'lookup'
+    , value: 'foo.bar'
+    , data: {
+        context: null
+      , local: true
+      }
+    }]
   }]
 }
 ```
