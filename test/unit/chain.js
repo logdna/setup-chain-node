@@ -17,6 +17,8 @@ const state = {
 test('chain', async (t) => {
   t.test('#lookup', async (t) => {
     const chain = new Chain(state)
+    t.equal(chain.context, state, 'ctx defaults to state if context stack is empty')
+
     chain.set('x', 1000)
     await chain.execute()
 
@@ -131,6 +133,50 @@ test('chain', async (t) => {
       const out = chain.lookup(lookup)
       t.match(out, expected, 'templated string values support function calls')
     }
+
+    {
+      t.throws(() => {
+        chain.lookup('#foo.this')
+      }, /expecting token of type --> identifier <-- but found --> 'this' <--/i)
+    }
+
+    {
+      t.throws(() => {
+        chain.lookup('#this')
+      }, /expecting token of type --> dot <-- but found --> '' <--/i)
+    }
+
+    {
+      const expected = {
+        empty: null
+      , key: 'world'
+      , alt: 'bill'
+      , name: 'hello {{#this.key}} {{#this.alt}}'
+      , output: 'hello world bill'
+      , nested: [
+          {deep: 'yes', works: 'yes'}
+        , {deep: 'no', works: 'no'}
+        ]
+      }
+
+      const out = chain
+        .lookup({
+          empty: '#this.does_not_exist'
+        , key: 'world'
+        , alt: 'bill'
+        , name: 'hello {{#this.key}} {{#this.alt}}'
+        , output: '!template:#this.name'
+        , nested: [{
+            deep: 'yes'
+          , works: '#this.deep'
+          }, {
+            deep: 'no'
+          , works: '#this.deep'
+          }]
+        })
+      t.match(out, expected, '#this references context object it belongs to')
+    }
+
   })
   t.test('#set', async (t) => {
     {
@@ -189,6 +235,7 @@ test('chain', async (t) => {
 
     chain.set('foo.bar', 'goodbye').reset()
     t.same(chain.tasks, [], 'internal tasks reset')
+    t.same(chain.context, [], 'internal context reset')
 
     const reset = await chain.execute()
     t.match(state, reset, 'can set nested literal values')

@@ -28,6 +28,10 @@ test('last visitor', async (t) => {
         type: 'root'
       , children: [{
           type: 'lookup'
+        , data: {
+            context: null
+          , local: false
+          }
         , value: 'foo'
         , position: {
             start: {column: 1, offset: 0, line: 1}
@@ -37,16 +41,28 @@ test('last visitor', async (t) => {
       })
     })
 
-    t.test('nested lookup value', async (t) => {
-      t.same(parse('#foo.baz'), {
+    t.test('nested lookup value (this)', async (t) => {
+      t.same(parse('#this.foo.baz'), {
         type: 'root'
       , children: [{
-          type: 'lookup'
-        , value: 'foo.baz'
+          type: 'ref'
+        , value: 'this'
         , position: {
-            start: {column: 1, offset: 0, line: 1}
-          , end: {column: 9, offset: 8, line: 1}
+            start: {offset: 1, line: 1, column: 2}
+          , end: {offset: 5, line: 1, column: 6}
           }
+        , children: [{
+            type: 'lookup'
+          , data: {
+              context: null
+            , local: true
+            }
+          , value: 'foo.baz'
+          , position: {
+              start: {column: 1, offset: 0, line: 1}
+            , end: {column: 14, offset: 13, line: 1}
+            }
+          }]
         }]
       })
     })
