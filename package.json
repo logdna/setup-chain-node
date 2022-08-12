@@ -15,6 +15,7 @@
   "scripts": {
     "generate": "scripts/generate.js",
     "lint": "eslint .",
+    "lint:fix": "npm run lint -- --fix",
     "pretest": "npm run lint",
     "release": "semantic-release",
     "release:dry": "semantic-release --dry-run --no-ci --branches=${BRANCH_NAME:-main}",
@@ -56,15 +57,15 @@
       "logdna"
     ],
     "parserOptions": {
-      "ecmaVersion": 2020
+      "ecmaVersion": 2022
     },
     "plugins": []
   },
   "homepage": "https://github.com/logdna/setup-chain-node",
   "devDependencies": {
     "casual": "^1.6.2",
-    "eslint": "^7.32.0",
-    "eslint-config-logdna": "^5.1.0",
+    "eslint": "^8.21.0",
+    "eslint-config-logdna": "^6.1.0",
     "moment": "^2.29.1",
     "semantic-release": "^17.4.4",
     "semantic-release-config-logdna": "^1.3.0",

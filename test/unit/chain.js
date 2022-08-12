@@ -34,10 +34,13 @@ test('chain', async (t) => {
     , [5, 'something', {one: 1}]
     , 'Returns array literals with no substitutions, but mixed types'
     )
-    t.equal(chain.lookup(
-      '2020-11-21T19:16:27.705Z')
+    t.equal(
+      chain.lookup(
+        '2020-11-21T19:16:27.705Z'
+      )
     , '2020-11-21T19:16:27.705Z'
-    , 'returns literal values')
+    , 'returns literal values'
+    )
     t.equal(chain.lookup(true), true, 'returns literal values')
     t.equal(chain.lookup(1), 1, 'returns literal values')
     t.equal(chain.lookup('#a'), 1, 'can lookup single values')
