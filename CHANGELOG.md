@@ -1,5 +1,18 @@
 ## Changelog
 
+# [1.1.0](https://github.com/logdna/setup-chain-node/compare/v1.0.13...v1.1.0) (2022-08-15)
+
+
+### Chores
+
+* **dep**: tap@16.3.0 [d2c275e](https://github.com/logdna/setup-chain-node/commit/d2c275ee496716e492a16c38d5a1642ffe191288) - Eric Satterwhite
+* **dep-dev**: eslint-config-logdna@6.1.0 [2d1d99a](https://github.com/logdna/setup-chain-node/commit/2d1d99ad0a91b7e0bb24592cd16fe8f8d5dbf7a3) - Eric Satterwhite
+
+
+### Features
+
+* **parser**: support parser keyword this [d9f0b49](https://github.com/logdna/setup-chain-node/commit/d9f0b49f5cef8d28bfc4a53dd9b5e2115aeea209) - Eric Satterwhite, closes: [#75](https://github.com/logdna/setup-chain-node/issues/75)
+
 ## [1.0.13](https://github.com/logdna/setup-chain-node/compare/v1.0.12...v1.0.13) (2022-06-05)
 
 
