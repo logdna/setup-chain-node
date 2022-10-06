@@ -97,6 +97,7 @@
       "--exclude=test/",
       "--exclude=coverage/",
       "--exclude=scripts/",
+      "--exclude=examples/",
       "--all"
     ]
   },
