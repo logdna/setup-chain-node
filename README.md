@@ -14,6 +14,7 @@
   * [`map(collection, iterator, label)`](#mapcollection-iterator-label)
   * [`sort(collection, comparator, label)`](#sortcollection-comparator-label)
   * [`repeat(times, name, opts, label)`](#repeattimes-name-opts-label)
+  * [`serial(times, name, opts, label)`](#serialtimes-name-opts-label)
   * [`sleep(opts)`](#sleepopts)
   * [`reset()`](#reset)
   * [`execute()`](#execute)
@@ -247,8 +248,10 @@ const state = await chain
 
 ## `repeat(times, name, opts, label)`
 
-Executes each task added sequentially and collects the results into a single object.
-This is a chain action resolved by [execute](#execute).
+Executes each task added and collects the results into a single object.
+This is a chain action resolved by [execute](#execute). Internally this uses `Promise.all`
+and does not necessarily ensure that actions execute in the order they are specified.
+If the order of execution is important, you should use [serial](#serial)
 
 **Parameters**
 
@@ -282,6 +285,61 @@ chain
   .then(console.log)
 
 > {result: ['hi', 'hi', 'hi', 'hi', 'hi']}
+```
+
+## `serial(times, name, opts, label)`
+
+Executes each task added sequentially and collects the results into a single array.
+This is a chain action resolved by [execute](#execute).
+
+**Parameters**
+
+* **times** [Number][]: The number of times to execute the given action name
+* **name** [String][]: The name of the action to execute.  This **must** already exist
+  on the chain as a valid action.
+* **opts** [Object][]: Any options that the named action requires.  Currently, this
+  only supports actions with an `(opts)` signature.  Custom signatures are not yet
+  supported.
+* **label** [String][]: Optional label in which to store the result.
+
+**Returns:** `this<SetupChain>`
+
+
+```javascript
+const {promisify}  = require('util')
+const SetupChain = require('@logdna/setup-chain')
+
+function randInt(min, max) { 
+  return Math.random() * (max - min) + min;
+}
+
+class MyChain extends SetupChain {
+  constructor(state) {
+    super(state, {
+      delay: ({value}) => {
+        return new Promise((resolve, reject) => {
+          const timeout = randInt(1, 1000)
+          setTimeout(() => {
+            resolve(`${value} (${timeout}ms)`)
+          }, timeout)
+        })
+      }
+    })
+
+    $incr() {
+      return ++this.count
+    }
+  }
+
+}
+
+const chain = new MyChain()
+chain
+  .serial(5, 'delay', {value: '!incr'}, 'result')
+  .execute()
+  .then(console.log)
+
+> {result: ['1 (10ms)', '2 (1ms)', '3 (1000ms)', '4 (22ms)', '5 (38ms)']}
 ```
 
 ## `sleep(opts)`
