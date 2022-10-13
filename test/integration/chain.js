@@ -210,11 +210,12 @@ test('Setup chain', async (t) => {
   t.test('Default SetupChain (no actions, state); Only built-ins', async (t) => {
     const chain = new Chain(null, null)
     t.same(chain.state, {}, 'Empty state')
-    t.equal(Object.keys(chain.actions).length, 5, 'Built-in action count')
+    t.equal(Object.keys(chain.actions).length, 6, 'Built-in action count')
     t.match(chain.actions, {
       map: Function
     , repeat: Function
     , sleep: Function
+    , serial: Function
     , sort: Function
     , set: Function
     }, 'Built-in action names')
