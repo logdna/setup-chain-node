@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.1.1](https://github.com/logdna/setup-chain-node/compare/v1.1.0...v1.1.1) (2022-10-13)
+
+
+### Chores
+
+* **deps**: update chevrotain requirement from ^10.1.2 to ^10.3.0 [7a12365](https://github.com/logdna/setup-chain-node/commit/7a12365fbbef3a78647e744fbedd8441c5940f85) - Eric Satterwhite
+
 # [1.1.0](https://github.com/logdna/setup-chain-node/compare/v1.0.13...v1.1.0) (2022-08-15)
 
 
