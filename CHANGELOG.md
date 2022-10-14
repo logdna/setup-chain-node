@@ -1,5 +1,12 @@
 ## Changelog
 
+# [1.2.0](https://github.com/logdna/setup-chain-node/compare/v1.1.1...v1.2.0) (2022-10-14)
+
+
+### Features
+
+* **actions**: include a serial action [e895a8b](https://github.com/logdna/setup-chain-node/commit/e895a8b2453c635a1a223accd66fa6cbca40d2b6) - Eric Satterwhite
+
 ## [1.1.1](https://github.com/logdna/setup-chain-node/compare/v1.1.0...v1.1.1) (2022-10-13)
 
 
