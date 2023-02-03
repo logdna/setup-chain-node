@@ -1,5 +1,12 @@
 ## Changelog
 
+# [1.3.0](https://github.com/logdna/setup-chain-node/compare/v1.2.0...v1.3.0) (2023-02-03)
+
+
+### Features
+
+* **chain**: add support for luxon object during lookups [7feb25f](https://github.com/logdna/setup-chain-node/commit/7feb25f03122c5a352870b7415773f2cd3d8bac0) - Eric Satterwhite
+
 # [1.2.0](https://github.com/logdna/setup-chain-node/compare/v1.1.1...v1.2.0) (2022-10-14)
 
 
