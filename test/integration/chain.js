@@ -1,6 +1,7 @@
 'use strict'
 
 const moment = require('moment')
+const luxon = require('luxon')
 const {test, threw} = require('tap')
 const Chain = require('../../lib/chain.js')
 const actions = require('../fixtures/actions/index.js')
@@ -104,11 +105,11 @@ test('Setup chain', async (t) => {
 
       t.match(state, {
         names: 'Hello, Mr. Wonderful'
-      }, 'expected output')
+      }, 'expected printNames output')
     }
   })
 
-  t.test('extended chain w/ lookup functions', async (t) => {
+  t.test('extended chain w/ lookup functions (moment)', async (t) => {
     class MomentChain extends Chain {
       constructor(state) {
         super(state)
@@ -137,6 +138,40 @@ test('Setup chain', async (t) => {
     }
     {
       const value = chain.lookup('!dateadd:!now,1,d,x')
+      t.match(value, /\d+/, 'formated number value')
+    }
+  })
+
+  t.test('extended chain w/ lookup functions (luxon)', async (t) => {
+    class LuxonChain extends Chain {
+      constructor(state) {
+        super(state)
+      }
+
+      $now() {
+        return luxon.DateTime.now()
+      }
+
+      $dateadd(date, amount, units = 'minutes', format) {
+        const [_date, _amount, _units] = this.lookup([date, amount, units])
+        let out = _date.isLuxonDateTime ? _date : new luxon.DateTime(_date)
+        out = out.plus({[_units]: _amount})
+        return format ? this.$strftime(format, out) : out
+      }
+
+      $strftime(format = 'Y-MM-DD', date) {
+        const input = this.lookup(date) || undefined
+        return input.setZone('utc').toFormat(format)
+      }
+    }
+
+    const chain = new LuxonChain()
+    {
+      const value = chain.lookup('!dateadd:!now,1,day')
+      t.ok(luxon.DateTime.isDateTime(value), 'is luxon DateTime value')
+    }
+    {
+      const value = chain.lookup('!dateadd:!now,1,day,x')
       t.match(value, /\d+/, 'formated number value')
     }
   })

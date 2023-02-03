@@ -2,6 +2,7 @@
 
 const {test, threw} = require('tap')
 const Moment = require('moment')
+const luxon = require('luxon')
 const typeOf = require('../../../lib/lang/type-of.js')
 
 class FooBar {
@@ -64,8 +65,25 @@ test('typeOf', (t) => {
   , {
       value: Moment()
     , expected: 'moment'
+    , message: 'typeOf(Moment()) === moment'
+    }
+  , {
+      value: luxon.DateTime.now()
+    , expected: 'luxondatetime'
+    , message: 'typeOf(luxon.DateTime.now()) === luxondatetime'
+    }
+  , {
+      value: luxon.Duration.fromMillis(Date.now())
+    , expected: 'luxonduration'
+    , message: 'typeOf(new luxon.Duration()) == luxonduration'
+    }
+  , {
+      value: new luxon.Interval({start: luxon.DateTime.now()})
+    , expected: 'luxoninterval'
+    , message: 'typeOf(new luxon.Interval()) === luxoninterval'
     }
   ]
+
   for (const current of cases) {
     t.equal(
       typeOf(current.value)
