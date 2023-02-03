@@ -61,6 +61,15 @@
         "test",
         "review"
       ]
+    },
+    {
+      "login": "dominic-mcallister-logdna",
+      "name": "Dominic McAllister",
+      "avatar_url": "https://avatars.githubusercontent.com/u/98114655?v=4",
+      "profile": "https://github.com/dominic-mcallister-logdna",
+      "contributions": [
+        "review"
+      ]
     }
   ],
   "contributorsPerLine": 7
