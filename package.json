@@ -65,7 +65,7 @@
   "devDependencies": {
     "casual": "^1.6.2",
     "eslint": "^8.35.0",
-    "eslint-config-logdna": "^6.1.0",
+    "eslint-config-logdna": "^7.0.1",
     "luxon": "^3.2.1",
     "moment": "^2.29.1",
     "semantic-release": "^17.4.4",
