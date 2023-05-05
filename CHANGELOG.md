@@ -1,5 +1,23 @@
 ## Changelog
 
+## [1.3.1](https://github.com/logdna/setup-chain-node/compare/v1.3.0...v1.3.1) (2023-05-05)
+
+
+### Bug Fixes
+
+* **ci**: gate prs from non maintainers [3a88517](https://github.com/logdna/setup-chain-node/commit/3a88517c7c02b84f991c9f26398316a60d009b91) - Eric Satterwhite
+
+
+### Chores
+
+* **deps**: update eslint requirement from ^8.21.0 to ^8.35.0 [2240e2e](https://github.com/logdna/setup-chain-node/commit/2240e2e713f4a3c5839d546ed36b181a147075f9) - Eric Satterwhite
+
+
+### Miscellaneous
+
+* update .all-contributorsrc [f1e822c](https://github.com/logdna/setup-chain-node/commit/f1e822ccc608a69e228664afcc894bfc7e269ac2) - Eric Satterwhite
+* update README.md [d6c4385](https://github.com/logdna/setup-chain-node/commit/d6c4385d4ec4d802934a1642ada0e4a8128953cf) - Eric Satterwhite
+
 # [1.3.0](https://github.com/logdna/setup-chain-node/compare/v1.2.0...v1.3.0) (2023-02-03)
 
 
