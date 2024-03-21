@@ -102,6 +102,12 @@ test('chain', async (t) => {
     }
 
     {
+      const expected = {position: [11, 2]}
+      const lookup = {position: [11, 2]}
+      t.same(chain.lookup(lookup), expected, 'array values parse number literals')
+    }
+
+    {
       const expected = {key: 11, values: [2, 10, {foo: 3}]}
       const lookup = {key: '#g', values: ['#b.c', '#f', {foo: '#b.d.e'}]}
       t.same(chain.lookup(lookup), expected, 'can populate nested object/array')
