@@ -1,5 +1,12 @@
 ## Changelog
 
+## [1.3.2](https://github.com/logdna/setup-chain-node/compare/v1.3.1...v1.3.2) (2024-03-22)
+
+
+### Bug Fixes
+
+* **lookup**: don't parse nested array elements as string templates [f25f5cd](https://github.com/logdna/setup-chain-node/commit/f25f5cd6bd9ac70e900784238078f5dee794675b) - Jacob Hull
+
 ## [1.3.1](https://github.com/logdna/setup-chain-node/compare/v1.3.0...v1.3.1) (2023-05-05)
 
 
