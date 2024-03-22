@@ -1,6 +1,6 @@
 # LogDNA's Test Setup Chain
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)&nbsp;<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 <!-- vim-markdown-toc GFM -->
@@ -801,6 +801,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/mdeltito"><img src="https://avatars.githubusercontent.com/u/69520?v=4?s=100" width="100px;" alt="Mike Del Tito"/><br /><sub><b>Mike Del Tito</b></sub></a><br /><a href="https://github.com/logdna/setup-chain-node/commits?author=mdeltito" title="Code">💻</a> <a href="https://github.com/logdna/setup-chain-node/commits?author=mdeltito" title="Documentation">📖</a> <a href="#maintenance-mdeltito" title="Maintenance">🚧</a> <a href="https://github.com/logdna/setup-chain-node/commits?author=mdeltito" title="Tests">⚠️</a> <a href="https://github.com/logdna/setup-chain-node/pulls?q=is%3Apr+reviewed-by%3Amdeltito" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://evanlucas.com/"><img src="https://avatars.githubusercontent.com/u/677994?v=4?s=100" width="100px;" alt="Evan Lucas"/><br /><sub><b>Evan Lucas</b></sub></a><br /><a href="https://github.com/logdna/setup-chain-node/commits?author=evanlucas" title="Code">💻</a> <a href="https://github.com/logdna/setup-chain-node/commits?author=evanlucas" title="Documentation">📖</a> <a href="#maintenance-evanlucas" title="Maintenance">🚧</a> <a href="https://github.com/logdna/setup-chain-node/commits?author=evanlucas" title="Tests">⚠️</a> <a href="https://github.com/logdna/setup-chain-node/pulls?q=is%3Apr+reviewed-by%3Aevanlucas" title="Reviewed Pull Requests">👀</a></td>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/dominic-mcallister-logdna"><img src="https://avatars.githubusercontent.com/u/98114655?v=4?s=100" width="100px;" alt="Dominic McAllister"/><br /><sub><b>Dominic McAllister</b></sub></a><br /><a href="https://github.com/logdna/setup-chain-node/pulls?q=is%3Apr+reviewed-by%3Adominic-mcallister-logdna" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/jakedipity"><img src="https://avatars.githubusercontent.com/u/29671917?v=4?s=100" width="100px;" alt="Jacob Hull"/><br /><sub><b>Jacob Hull</b></sub></a><br /><a href="https://github.com/logdna/setup-chain-node/issues?q=author%3Ajakedipity" title="Bug reports">🐛</a></td>
     </tr>
   </tbody>
 </table>
