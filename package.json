@@ -101,7 +101,7 @@
     ]
   },
   "dependencies": {
-    "@logdna/stdlib": "^1.1.5",
+    "@logdna/stdlib": "^2.0.0",
     "chevrotain": "^10.3.0"
   }
 }
