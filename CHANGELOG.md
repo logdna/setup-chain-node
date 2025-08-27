@@ -1,5 +1,12 @@
 ## Changelog
 
+## [2.0.1](https://github.com/logdna/setup-chain-node/compare/v2.0.0...v2.0.1) (2025-08-27)
+
+
+### Documentation
+
+* **examples**: add examples for common use-cases [7d83ff2](https://github.com/logdna/setup-chain-node/commit/7d83ff2f0f4392bd21994548a88185bce796161c) - Mike Del Tito
+
 # [2.0.0](https://github.com/logdna/setup-chain-node/compare/v1.3.2...v2.0.0) (2025-08-27)
 
 
