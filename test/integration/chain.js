@@ -242,6 +242,13 @@ test('Setup chain', async (t) => {
     }
   })
 
+  t.test('calling undefined chain function', async (t) => {
+    const chain = new Chain()
+    chain.set('foo', {bar: '!baz("qux")'})
+
+    t.rejects(chain.execute(), 'baz action is undefined')
+  })
+
   t.test('Default SetupChain (no actions, state); Only built-ins', async (t) => {
     const chain = new Chain(null, null)
     t.same(chain.state, {}, 'Empty state')

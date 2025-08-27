@@ -84,9 +84,11 @@ test('chain', async (t) => {
     }
 
     {
-      const expected = [null]
       const lookup = ['!notfound']
-      t.same(chain.lookup(lookup), expected, 'invalid key lookup returns null')
+      t.throws(() => { chain.lookup(lookup) }, {
+        name: 'TypeError'
+      , message: '\'notfound\' is not a callable chain function'
+      }, 'invalid function lookup throws')
     }
 
     {
