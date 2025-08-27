@@ -1,5 +1,23 @@
 ## Changelog
 
+# [2.0.0](https://github.com/logdna/setup-chain-node/compare/v1.3.2...v2.0.0) (2025-08-27)
+
+
+### Bug Fixes
+
+* throw error when calling an undefined chain function [bf3d055](https://github.com/logdna/setup-chain-node/commit/bf3d055ab096eae8bd66db6121623e940c0e5100) - Mike Del Tito, closes: [#133](https://github.com/logdna/setup-chain-node/issues/133)
+
+
+### Miscellaneous
+
+* update .all-contributorsrc [8f168d5](https://github.com/logdna/setup-chain-node/commit/8f168d52be5090afc5eea21ac1175fa6075e9384) - Eric Satterwhite
+* update README.md [935e076](https://github.com/logdna/setup-chain-node/commit/935e076b343da1500f1bc51751cabc1599c19681) - Eric Satterwhite
+
+
+### **BREAKING CHANGES**
+
+* Invalid function calls/lookups will now throw an error.
+
 ## [1.3.2](https://github.com/logdna/setup-chain-node/compare/v1.3.1...v1.3.2) (2024-03-22)
 
 
