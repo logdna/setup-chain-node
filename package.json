@@ -103,6 +103,6 @@
   },
   "dependencies": {
     "@logdna/stdlib": "^1.1.5",
-    "chevrotain": "^10.3.0"
+    "chevrotain": "^11.0.3"
   }
 }
