@@ -42,7 +42,7 @@ test('Setup chain', async (t) => {
       $last(...args) {
         return args[args.length - 1]
       }
-      fake(opts, label) {
+      fake() {
         this.tasks.push(null)
         return this
       }
@@ -111,10 +111,6 @@ test('Setup chain', async (t) => {
 
   t.test('extended chain w/ lookup functions (moment)', async (t) => {
     class MomentChain extends Chain {
-      constructor(state) {
-        super(state)
-      }
-
       $now() {
         return moment().utc().valueOf()
       }
@@ -144,10 +140,6 @@ test('Setup chain', async (t) => {
 
   t.test('extended chain w/ lookup functions (luxon)', async (t) => {
     class LuxonChain extends Chain {
-      constructor(state) {
-        super(state)
-      }
-
       $now() {
         return luxon.DateTime.now()
       }
@@ -177,11 +169,7 @@ test('Setup chain', async (t) => {
   })
 
   t.test('extended chain created with an existing state', async (t) => {
-    class WithStateChain extends Chain {
-      constructor(state) {
-        super(state)
-      }
-    }
+    class WithStateChain extends Chain {}
     const state_param = {hello: 'there'}
 
     const chain = new WithStateChain(state_param)
@@ -192,10 +180,6 @@ test('Setup chain', async (t) => {
 
   t.test('chain function argument handling', async (t) => {
     class FunctionChain extends Chain {
-      constructor(state) {
-        super(state)
-      }
-
       $test(...args) {
         return `test-${args.join('-')}`
       }

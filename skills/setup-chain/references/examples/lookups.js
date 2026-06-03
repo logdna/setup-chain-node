@@ -17,7 +17,7 @@ console.log(chain.lookup({
 , nested: '#three'
 }))
 
-
+// using lookup in an action
 console.dir(
   await chain.myAction({four: '#four.0'}).execute()
 ) // {myAction: {four: 'a'}}
