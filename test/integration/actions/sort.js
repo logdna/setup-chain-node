@@ -58,7 +58,7 @@ test('SetupChain.sort() as a builtin action', async (t) => {
 
   t.test('Error: collection is not an array', async (t) => {
     const msg = new RegExp(
-      'first param should be an array.  Supports dynamic lookups'
+      'first param should be an array. {2}Supports dynamic lookups'
     )
 
     t.rejects(chain.sort().execute(), {
