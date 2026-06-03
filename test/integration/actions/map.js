@@ -73,7 +73,7 @@ test('SetupChain.map() as a builtin action', async (t) => {
 
   t.test('Error: first parameter is not an array', async (t) => {
     const msg = new RegExp(
-      'first param should be an array.  Supports dynamic lookups'
+      'first param should be an array. Supports dynamic lookups'
     )
 
     t.rejects(chain.map().execute(), {
